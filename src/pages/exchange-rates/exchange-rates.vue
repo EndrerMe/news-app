@@ -1,8 +1,8 @@
 <template>
-    <div class="rates">
+    <div class="rates" ref="rates">
 
         <div class="rates-type">
-            <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount">
+            <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount" @focus="focusOn" @blur="focusOut">
             <span> Exchange rate from </span>
             <select v-on:change="changeCurrentRate($event)">
                 <option v-for="value of valuesFrom" :value="value">{{ value }}</option>
@@ -132,6 +132,14 @@ import _ from 'lodash'
                 }
                 this.isLoaderShow = false;
             }, 1000),
+
+            focusOn() {
+                this.$refs['rates'].style.paddingTop = '250px'
+            },
+
+            focusOut() {
+                this.$refs['rates'].style.paddingTop = '0'
+            }
         }
         
     }
