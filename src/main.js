@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueGeolocation from 'vue-browser-geolocation';
 import VueMoment from 'vue-moment';
+import VueDraggableResizable from 'vue-draggable-resizable'
 // Main Component
 import App from './App.vue'
 // Router Component
@@ -14,13 +15,15 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Bootstrap
 import BootstrapVue from 'bootstrap-vue'
-// Bootstrap Style
+// styles
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 
 library.add(faCoffee);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
