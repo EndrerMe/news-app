@@ -68,50 +68,52 @@ export default {
             });
         }, 1500),
 
+        // Widget moveable functions
+
         mouseDown(e) {
-            let x;
-            let y;
-            let blockX = this.$refs['widget'].getBoundingClientRect().left;
-            let blockY = this.$refs['widget'].getBoundingClientRect().top;
+            // let x;
+            // let y;
+            // let blockX = this.$refs['widget'].getBoundingClientRect().left;
+            // let blockY = this.$refs['widget'].getBoundingClientRect().top;
 
-            if (e.clientY && e.clientX) {
-                x = e.clientX;
-                y = e.clientY
-            } else if (e.touches[0].clientX && e.touches[0].clientY) {
-                x = e.touches[0].clientX;
-                y = e.touches[0].clientY
-            }
+            // if (e.clientY && e.clientX) {
+            //     x = e.clientX;
+            //     y = e.clientY
+            // } else if (e.touches[0].clientX && e.touches[0].clientY) {
+            //     x = e.touches[0].clientX;
+            //     y = e.touches[0].clientY
+            // }
 
-            this.blockPosition = {
-                left: x + (x - blockX) + 'px',
-                top: y + (y - blockY) + 'px',
-            }
+            // this.blockPosition = {
+            //     left: x + (x - blockX) + 'px',
+            //     top: y + (y - blockY) + 'px',
+            // }
 
-            this.isMouseDown = true;
+            // this.isMouseDown = true;
         },
 
         mouseUp() {
-            this.isMouseDown = false;
+            //this.isMouseDown = false;
         },
 
         changePosition(e) {
-            if (this.isMouseDown) {
-                let x;
-                let y;
-                let blockX = this.$refs['widget'].getBoundingClientRect().left;
-                let blockY = this.$refs['widget'].getBoundingClientRect().top;
+            // if (this.isMouseDown) {
+            //     let x;
+            //     let y;
+            //     let blockX = this.$refs['widget'].getBoundingClientRect().left;
+            //     let blockY = this.$refs['widget'].getBoundingClientRect().top;
                 
-                if (e.clientY && e.clientX) {
-                    x = e.clientX;
-                    y = e.clientY;
-                } else if (e.touches[0].clientX && e.touches[0].clientY) {
-                    x = e.touches[0].clientX;
-                    y = e.touches[0].clientY
-                }
+            //     if (e.clientY && e.clientX) {
+            //         x = e.clientX;
+            //         y = e.clientY;
+            //     } else if (e.touches[0].clientX && e.touches[0].clientY) {
+            //         x = e.touches[0].clientX;
+            //         y = e.touches[0].clientY
+            //     }
 
-                this.blockPosition.left = x + (x - blockX) + 'px';
-                this.blockPosition.top = y + (y - blockY) + 'px';
-            }
+            //     this.blockPosition.left = x + (x - blockX) + 'px';
+            //     this.blockPosition.top = y + (y - blockY) + 'px';
+            // }
         }
     },
 }
