@@ -1,3 +1,6 @@
 module.exports = {
-    publicPath: 'news-app'
+    publicPath: 'news-app',
+    devServer: {
+        proxy: 'https://maps.googleapis.com/maps/',
+    }
 }

@@ -13,7 +13,7 @@
             <span class="temp">
             {{ temp }}&deg;
             </span>
-            <span class="temp-symbol" @click='changeTemp("fahrenheit")'>&#8457</span>
+            <span class="temp-symbol" @click='changeTemp("fahrenheit")'>F</span>
             <span> | </span>
             <span class="temp-symbol" @click='changeTemp("celsius")'>&#8451</span>
         </div>
@@ -32,11 +32,13 @@ export default {
             temp: '',
             location: '',
             date: '',
+            coordinates: null,
         }
     },
     created() {
         this.$getLocation()
         .then(coordinates => {
+            this.coordinates = coordinates;
             weatherService.getWeather(coordinates.lat, coordinates.lng).then((res) => {
                 this.temp = res.data.main.temp;
                 this.location = res.data.name;
@@ -56,12 +58,12 @@ export default {
     methods: {
         changeTemp(temp) {
             if (temp === 'fahrenheit') {
-                weatherService.getWeather(coordinates.lat, coordinates.lng).then((res) => {
+                weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
                     this.temp = res.data.main.temp * 1.8 + 32;
                 });
             } else {
-                weatherService.getWeather(coordinates.lat, coordinates.lng).then((res) => {
-                    this.temp = res.data.main.temp * 1.8 - 32;
+                weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
+                    this.temp = res.data.main.temp;
                 });
             }
         }

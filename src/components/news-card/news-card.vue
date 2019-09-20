@@ -1,7 +1,7 @@
 <template>
     <div class="news">
-        <img :src="news.urlToImage" @error="imgPlaceholder" v-if="news.urlToImage" ref="newsImage">
-        <img src="https://via.placeholder.com/300" v-else>
+        <img class="news-img" :src="news.urlToImage" @error="imgPlaceholder" v-if="news.urlToImage" ref="newsImage">
+        <img class="news-img" src="https://via.placeholder.com/300" v-else>
         <div class="news-info">
             <h3 class="news-title">{{ news.title }}</h3>
             <p class="news-description">{{ news.description }}</p>
@@ -73,9 +73,9 @@ export default {
         background-color: #ffffff;
     }
 
-    img {
-        width: 50%;
-        height: 100%;
+    .news-img {
+        width: 350px;
+        height: 300px;
     }
 
     h3 {
@@ -168,7 +168,7 @@ export default {
             padding-bottom: 100px;
         }
 
-        img {
+        .news-img {
             width: 100%;
             height: 50%;
         }

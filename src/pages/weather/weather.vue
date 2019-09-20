@@ -1,10 +1,14 @@
 <template>
     <div class="weather">
         <div class="widget" ref='widget' :style='blockPosition'>
-            <span class="draggable">(draggable)</span>
+            <!-- <span class="draggable">(draggable)</span> -->
+            <span class="probablyCountry-container">Did you mean
+                <span @click="getWeather('probably')" class="probablyCountry">{{ probablyCountry }}?</span>
+            </span>
             <div class="left-panel panel">
                 <div class="city">
                     <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)">
+                    <button class="showWeather" @click='getWeather("input")'>Search</button>
                 </div>
                 <div class="info">
                     <div class="weather-info">
@@ -13,21 +17,30 @@
                     </div>
 
                     <div class="temp">
-                        <span>Temp {{ temp }}&deg;</span>
+                        <span>Temp {{ temp }}&deg; </span>
+                        <span class="temp-symbol" @click='changeTemp("fahrenheit")'>F</span>
+                        <span> | </span>
+                        <span class="temp-symbol" @click='changeTemp("celsius")'>&#8451</span>
                     </div>
                 </div>
             </div>
-
+            <span @click='showMoreWeather' class="more">More</span>
         </div>
+        <more :weather='moreWeather' v-if='isShowMoreWeather' class="more-popup"></more>
     </div>
 </template>
 
 <script>
 import weatherService from './../../shared/services/weather.service';
+import autocompleteService from './../../shared/services/autocomplete.service';
+import more from './../../components/more-weather/more-weather'
 import _ from 'lodash'
 
 export default {
     name: 'Weather',
+    components: {
+        more
+    },
     data() {
         return {
             temp: '',
@@ -37,14 +50,20 @@ export default {
             weather: '',
             isMouseDown: false,
             block: null,
+            probablyCountry: 'London',
             blockPosition: {
                 margin: 'auto auto'
             },
+            items: ['London', 'Chicago', 'New York'],
+            selected: '',
+            moreWeather: null,
+            isShowMoreWeather: false,
         }
     },
     created() {
         this.isMouseDown = false;
         weatherService.getWeatherByCountry(this.userCoutry).then((res) => {
+            this.moreWeather = res.data;
             this.temp = res.data.main.temp;
             this.location = res.data.name;
             this.userCoutry = res.data.name;
@@ -52,13 +71,30 @@ export default {
             this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
             this.weather = res.data.weather[0].description
         });
-
     },
     methods: {
         changecountry:_.debounce(function(event) {
-            let value = event.target.value;
+            const value = event.target.value;
+            autocompleteService.getDataForAutocomplete(value).then((res) => {
+                let fullCountry = res.data.predictions[0].description;
+                let country = fullCountry.split(',');
+                this.probablyCountry = country[0];
+            }, (err) => {
+                console.log(err)
+            })
+        }, 500),
+
+        getWeather(type) {
+            let value;
+
+            if (type === 'input') {
+                value = this.userCoutry;
+            } else {
+                value = this.probablyCountry;
+            }
 
             weatherService.getWeatherByCountry(value).then((res) => {
+                this.moreWeather = res.data;
                 this.temp = res.data.main.temp;
                 this.location = res.data.name;
                 this.userCoutry = res.data.name;
@@ -66,7 +102,7 @@ export default {
                 this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
                 this.weather = res.data.weather[0].description
             });
-        }, 1500),
+        },
 
         // Widget moveable functions
         mouseDown(e) {
@@ -113,6 +149,24 @@ export default {
             //     this.blockPosition.left = x + (x - blockX) + 'px';
             //     this.blockPosition.top = y + (y - blockY) + 'px';
             // }
+        },
+
+        changeTemp(temp) {
+            let value = this.userCoutry;
+
+            if (temp === 'fahrenheit') {
+                weatherService.getWeatherByCountry(value).then((res) => {
+                    this.temp = res.data.main.temp * 1.8 + 32;
+                });
+            } else {
+                weatherService.getWeatherByCountry(value).then((res) => {
+                    this.temp = res.data.main.temp;
+                });
+            }
+        },
+
+        showMoreWeather() {
+            this.isShowMoreWeather = true;
         }
     },
 }
@@ -130,10 +184,27 @@ export default {
         overflow: hidden;
     }
 
+    .showWeather {
+        width: 100%;
+        background-color: transparent;
+        outline: none;
+        border: none;
+        margin-top: 5px;
+        border: 1px solid black;
+    }
+
+    .probablyCountry-container {
+        font-size: 14px;
+    }
+
+    .probablyCountry {
+        color: blue;
+    }
+
     div.widget {
-        position: absolute;
         display: flex;
         position: relative;
+        flex-direction: column;
         width: 550px;
         height: 200px;
         /* margin: auto auto; */
@@ -152,6 +223,18 @@ export default {
         width: 100%;
     }
 
+    .more {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .more-popup {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 999;
+    }
+
     .info {
         display: flex;
         flex-direction: column;
@@ -159,11 +242,12 @@ export default {
     }
 
     div.city {
+        position: relative;
         font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
         padding-top: 5px;
-        width: 20%;
+        width: 30%;
         color: rgba(0,0,0,0.7);
     }
 
@@ -191,7 +275,7 @@ export default {
     @media (max-width: 650px) {
         div.widget {
             width: 96%;
-            height: 230px;
+            height: 300px;
         }
 
         div.city {
@@ -206,7 +290,7 @@ export default {
     @media (max-width: 350px) {
         div.widget {
             width: 96%;
-            height: 260px;
+            height: 300px;
         }
     }
 </style>

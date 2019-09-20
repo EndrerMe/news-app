@@ -92,6 +92,7 @@ export default {
             location: '',
             date: '',
             isShowWeather: true,
+            coordinates: null,
         }
     },
     created() {
@@ -133,7 +134,7 @@ export default {
             if (matchWindow.matches) {  
                 this.isShowWeather = !this.isShowWeather;
             }
-        }
+        },
     },
 }
 </script>
