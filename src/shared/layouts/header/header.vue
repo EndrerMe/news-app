@@ -32,7 +32,7 @@
             </label>
 
             <nav>    
-                <ul class="categories">
+                <ul class="categories mobile-categories">
                     <li v-on:click="closeMenu()" class="category" v-bind:class="{ activeCategory: currentUrl === 'Home' }">
                         <router-link class="link" :to="{name: `Home`}">Home Page</router-link>
                     </li>
@@ -201,6 +201,10 @@ export default {
 
     .mobileMenu {
         display: none;
+    }
+
+    .mobile-categories {
+        z-index: 999;
     }
 
     input + label {
