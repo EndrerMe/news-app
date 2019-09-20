@@ -1,6 +1,6 @@
 <template>
     <div class="weather" @mousemove="changePosition" @touchmove='changePosition'>
-        <div class="widget" ref='widget' :style='blockPosition' @mousedown="mouseDown" @mouseup="mouseUp">
+        <div class="widget" ref='widget' :style='blockPosition' @mousedown="mouseDown" @mouseup="mouseUp" @touchstart='mouseDown' @touchend='mouseUp'>
             <span class="draggable">(draggable)</span>
             <div class="left-panel panel">
                 <div class="city">

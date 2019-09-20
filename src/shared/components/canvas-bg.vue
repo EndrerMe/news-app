@@ -123,16 +123,72 @@ export default {
             this.$refs['canvas'].height = window.innerHeight;
             this.provider.context = this.$refs['canvas'].getContext('2d', "mybackground", window.innerHeight, window.innerWidth);
 
-            if (window.innerWidth < 840) {
-                this.dotsCol = 80;
+            if (window.innerWidth <= 840) {
+                this.dotsCol = 70;
+                this.dots = [];
+                for (let j = 0; j < this.dotsCol; j++) {
+                    this.dots.push({
+                    x: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientWidth),
+                    y: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientHeight),
+                    //(design) Color of dots
+                    color: '#e6e6e6',
+                    //(design) dots radius
+                    radius: 3,
+                    stepCount: Math.floor(Math.random() * 135),
+                    direction: Math.floor(Math.random() * 8),
+                    });
+                }
             }
 
             if (window.innerWidth < 640) {
-                this.dotsCol = 60;
+                this.dotsCol = 40;
+                this.dots = [];
+                for (let j = 0; j < this.dotsCol; j++) {
+                    this.dots.push({
+                    x: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientWidth),
+                    y: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientHeight),
+                    //(design) Color of dots
+                    color: '#e6e6e6',
+                    //(design) dots radius
+                    radius: 3,
+                    stepCount: Math.floor(Math.random() * 135),
+                    direction: Math.floor(Math.random() * 8),
+                    });
+                }
             }
 
             if (window.innerWidth > 840) {
-                this.dotsCol = 120;
+                this.dotsCol = 100;
+                this.dots = [];
+                for (let j = 0; j < this.dotsCol; j++) {
+                    this.dots.push({
+                    x: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientWidth),
+                    y: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientHeight),
+                    //(design) Color of dots
+                    color: '#e6e6e6',
+                    //(design) dots radius
+                    radius: 3,
+                    stepCount: Math.floor(Math.random() * 135),
+                    direction: Math.floor(Math.random() * 8),
+                    });
+                }
+            }
+
+            if (window.innerHeight > 1024) {
+                this.dotsCol = 130;
+                this.dots = [];
+                for (let j = 0; j < this.dotsCol; j++) {
+                    this.dots.push({
+                    x: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientWidth),
+                    y: Math.floor(Math.random() * this.$refs['canvas'].parentElement.clientHeight),
+                    //(design) Color of dots
+                    color: '#e6e6e6',
+                    //(design) dots radius
+                    radius: 3,
+                    stepCount: Math.floor(Math.random() * 135),
+                    direction: Math.floor(Math.random() * 8),
+                    });
+                }
             }
 
         }

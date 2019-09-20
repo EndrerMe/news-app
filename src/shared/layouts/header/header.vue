@@ -125,7 +125,6 @@ export default {
             this.$refs.mobileMenu.checked = false;
             if (this.isShowWeather === false) {
                 this.isShowWeather = true;
-                this.$refs.weather.style.visibility = 'visible';
             }
         },
 
