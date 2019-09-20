@@ -1,0 +1,257 @@
+<template>
+    <div class="rates">
+
+        <div class="rates-type">
+            <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount">
+            <span> Exchange rate from </span>
+            <select v-on:change="changeCurrentRate($event)">
+                <option v-for="value of valuesFrom" :value="value">{{ value }}</option>
+            </select>
+            <span> to </span>
+            <select v-on:change="changeRateTo($event)">
+                <option v-for="value of valuesTo" :value="value">{{ value }}</option>
+            </select>
+        </div>
+        <div class="current-rate-container">
+            <h2 class="current-rate">{{ rateAmount }} {{ currentRate }}: {{ exchangeName }} {{ exchangeTo }}</h2>
+        </div>
+        <div class="rate-items">
+            <div class="rate-item" v-for="value of itemValue">
+                <h3 class="rate">{{ value }}: {{ rates[value] }}</h3>
+            </div>
+        </div>
+
+        <div v-show="isLoaderShow" class="loader-container">
+            <loader class="loader"></loader>
+        </div>
+    </div>
+</template>
+
+<script>
+import ratesService from './../../shared/services/rates.service'
+import loader from './../../shared/components/loader';
+import _ from 'lodash'
+
+    export default {
+        name: 'ExchangeRages',
+        components: {
+            loader
+        },
+        data() {
+            return {
+                rates: {},
+                currentRate: 'USD',
+                currentRateValue: '',
+                valuesFrom: ['USD', 'EUR', 'RUB', 'CHF'],
+                valuesTo: ['EUR', 'USD', 'RUB', 'CHF'],
+                itemValue: ['EUR', 'USD', 'RUB', 'CHF'],
+                exchangeTo: '',
+                exchangeName: 'EUR',
+                rateAmount: 100,
+                isLoaderShow: false,
+            }
+        },
+        created() {
+            this.isLoaderShow = true;
+            for (let i = 0; i < this.itemValue.length; i++) {
+                if (this.itemValue[i] === this.currentRate) {
+                    this.itemValue.splice(i,1);
+                }
+            }
+
+            ratesService.getRates(this.currentRate).then(res => {
+                this.rates = res.data.rates;
+                this.currentRateValue = this.rates[this.currentRate];
+            });
+
+            ratesService.getRates(this.currentRate).then(res => {
+                let result = this.rates[this.exchangeName];
+                this.rates = res.data.rates;
+                this.exchangeTo = result;
+                this.isLoaderShow = false;
+            });
+        },
+        methods: {
+            changeCurrentRate(event) {
+                this.isLoaderShow = true;
+                let target = event.target.value;
+                this.currentRate = target;
+                this.itemValue = ['EUR', 'USD', 'RUB', 'CHF'];
+
+                for (let i = 0; i < this.itemValue.length; i++) {
+                    if (this.itemValue[i] === this.currentRate) {
+                        this.itemValue.splice(i,1);
+                    }
+                }
+
+                ratesService.getRates(this.currentRate).then(res => {
+                    this.rates = res.data.rates;
+                    this.currentRateValue = this.rates[this.currentRate];
+
+                    this.exchangeTo = this.rates[this.exchangeName];
+                    
+                    this.isLoaderShow = false;
+                });
+            },
+
+            changeRateTo(event) {
+                this.isLoaderShow = true;
+                let target = event.target.value;
+
+                ratesService.getRates(this.currentRate).then(res => {
+                    this.rates = res.data.rates;
+                    this.exchangeTo = this.rates[target];
+                    this.exchangeName = target;
+
+                    this.isLoaderShow = false;
+                });
+            },
+
+            changeAmount:_.debounce(async function(event) {
+                this.isLoaderShow = true;
+                const value = event.target.value;
+
+                this.rateAmount = value;
+
+                const res = await ratesService.getRates(this.currentRate);
+
+                if (this.exchangeTo === 0) {
+                    this.exchangeTo = res.data.rates[this.exchangeName]
+                    this.exchangeTo = this.exchangeTo * value;
+                } else {
+                    this.exchangeTo = this.exchangeTo * value;
+                }
+                
+                this.rates = res.data.rates;
+
+                for (let item in this.rates) {
+                    if (typeof this.rates[item] == 'number') {
+                        this.rates[item] = this.rates[item] * value;
+                    }
+                    continue;
+                }
+                this.isLoaderShow = false;
+            }, 1000),
+        }
+        
+    }
+</script>
+
+<style scoped>
+    .rates {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 70%;
+        height: calc(100vh - 96px);
+        margin: 0 auto;
+    }
+
+    .rates-type {
+        margin-top: -15em;
+    }
+
+    .current-rate-container {
+        margin-top: 12px;
+    }
+
+    .loader-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        background-color: rgba(255, 255, 255, .7);
+        width: 100%;
+        height: 100%;
+    }
+
+    .loader {
+        
+    }
+
+    .rate-items {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 35px;
+        justify-content: center;
+        background-color: #ffffff;
+    }
+
+    .rate-item {
+        border: 1px solid #f0f0f0;
+        margin-left: 25px;
+        padding: 25px 20px;
+        margin-top: 10px;
+    }
+
+    .amount {
+        border: none;
+        outline: none;
+        width: 90px;
+        padding: 2px 5px;
+        border-bottom: 1px solid #d1d1d1;
+    }
+
+    .rate {
+        font-size: 27px;
+    }
+
+    @media (max-width: 840px) {
+        .rates {
+            height: calc(100vh - 81px);
+        }
+
+        .rate {
+            font-size: 20px;
+        }
+
+        .rates-type {
+            margin-top: 0;
+        }
+    }
+
+    @media (max-width: 650px) {
+        .rates {
+            height: 100vh;
+        }
+
+        .rate {
+            font-size: 18px;
+        }
+
+        .rates-type {
+            margin-top: 150px;
+        }
+
+        .rate-item {
+            margin-left: 0;
+        }
+
+        .current-rate {
+            font-size: 18px;
+        }
+
+        .rate-items {
+            margin-top: 10px;
+        }
+
+        .rate-item {
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+
+        .rates-type {
+            margin-top: -7em;
+        }
+    }
+
+    @media (max-width: 670px) {
+        .rates-type {
+            margin-top: 0;
+        }
+    }
+</style>
