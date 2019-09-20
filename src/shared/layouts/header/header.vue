@@ -204,7 +204,7 @@ export default {
     }
 
     .mobile-categories {
-        z-index: 999;
+        margin-top: 40px;
     }
 
     input + label {
@@ -278,7 +278,7 @@ export default {
         font-weight: 700;
         font-family: sans-serif;
         display: block;
-        margin-top: 15px;
+        margin-top: 10px;
     }
     input:checked ~ nav {
         height: 100%;
