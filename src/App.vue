@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <CanvasBg></CanvasBg>
-    <Header v-if='isShowHeaderAndFooter'></Header>
+    <Header v-show='isShowHeaderAndFooter'></Header>
     <router-view @toggleHeadAndFoot='toggleHeadAndFoot' />
-    <Footer v-if='isShowHeaderAndFooter' class="footer"></Footer>
+    <Footer v-show='isShowHeaderAndFooter' class="footer"></Footer>
   </div>
 </template>
 
