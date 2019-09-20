@@ -2,7 +2,7 @@
     <div class="rates">
 
         <div class="rates-type">
-            <input v-on:input="changeAmount($event)" @focus='changeHeight()' type="number" placeholder="Amount" class="amount">
+            <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount">
             <span> Exchange rate from </span>
             <select v-on:change="changeCurrentRate($event)">
                 <option v-for="value of valuesFrom" :value="value">{{ value }}</option>
