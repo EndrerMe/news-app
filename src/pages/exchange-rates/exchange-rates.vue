@@ -201,10 +201,6 @@ import _ from 'lodash'
     }
 
     @media (max-width: 840px) {
-        .rates {
-            height: calc(100vh - 81px);
-        }
-
         .rate {
             font-size: 20px;
         }
@@ -215,10 +211,6 @@ import _ from 'lodash'
     }
 
     @media (max-width: 650px) {
-        .rates {
-            height: 100vh;
-        }
-
         .rate {
             font-size: 18px;
         }
