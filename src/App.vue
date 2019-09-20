@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <CanvasBg></CanvasBg>
-    <Header></Header>
-    <router-view/>
-    <Footer class="footer"></Footer>
+    <Header v-if='isShowHeaderAndFooter'></Header>
+    <router-view @toggleHeadAndFoot='toggleHeadAndFoot' />
+    <Footer v-if='isShowHeaderAndFooter' class="footer"></Footer>
   </div>
 </template>
 
@@ -23,12 +23,17 @@ export default {
   data() {
     return {
       category: null,
+      isShowHeaderAndFooter: true,
     }
   },
   methods: {
     updateCategory(e) {
       this.$emit('updateNews', e)
     },
+
+    toggleHeadAndFoot(bool) {
+      this.isShowHeaderAndFooter = bool
+    }
   },
 }
 </script>

@@ -134,11 +134,13 @@ import _ from 'lodash'
             }, 1000),
 
             focusOn() {
-                this.$refs['rates'].style.paddingTop = '35%'
+                //this.$refs['rates'].style.paddingTop = '35%'
+                this.$emit('toggleHeadAndFoot', false);
             },
 
             focusOut() {
-                this.$refs['rates'].style.paddingTop = '0'
+                //this.$refs['rates'].style.paddingTop = '0'
+                this.$emit('toggleHeadAndFoot', true);
             }
         }
         
