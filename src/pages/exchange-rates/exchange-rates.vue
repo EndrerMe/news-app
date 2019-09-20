@@ -49,9 +49,16 @@ import _ from 'lodash'
                 exchangeName: 'EUR',
                 rateAmount: 100,
                 isLoaderShow: false,
+                isAndoird,
             }
         },
         created() {
+            this.isAndoird = navigator.userAgent.toLowerCase().indexOf("android") > -1;
+
+            if(isAndroid) {
+                document.write('<meta name="viewport" content="width=device-width,height='+window.innerHeight+', initial-scale=1.0">');
+            }
+
             this.isLoaderShow = true;
             for (let i = 0; i < this.itemValue.length; i++) {
                 if (this.itemValue[i] === this.currentRate) {

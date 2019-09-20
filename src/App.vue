@@ -18,7 +18,7 @@ export default {
   components: {
     Header,
     Footer,
-    CanvasBg
+    CanvasBg,
   },
   data() {
     return {
