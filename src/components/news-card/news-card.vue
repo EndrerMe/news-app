@@ -8,9 +8,11 @@
 
             <router-link class="btn-read" :to="{name: 'News', params: {news}}">Read</router-link>
             <span class="pablish-date">{{ news.publishedAt | moment("from", "now") }}</span>
-            <social-sharing url="https://mySait.org/"
+            <social-sharing url=""
                       :title="news.title"
                       :description="news.description"
+                      :media="news.urlToImage"
+                      :quote="news.description"
                       hashtags="news"
                       inline-template class="shared">
                 <div>
@@ -46,6 +48,7 @@ export default {
     mounted() {
         if (this.sendedNews) {
             this.news = this.sendedNews;
+            console.log(this.news.urlToImage)
         }
     },
     created() {
@@ -54,10 +57,6 @@ export default {
     },
     watch:{
         $route (to, from){
-            this.news = this.sendedNews;
-        },
-
-        sendedNews() {
             this.news = this.sendedNews;
         },
     },

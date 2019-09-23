@@ -10,15 +10,14 @@
 <script>
 export default {
     name: 'subscribeNotification',
+    props: ['isUserSubscribe'],
     data() {
         return {
-            isShowNotification: false
+            isShowNotification: false,
+            timer: null,
         }
     },
     created() {
-        setTimeout(() => {
-            this.isShowNotification = true
-        }, 5000);
     },
     methods: {
         showSubscribe() {
@@ -27,6 +26,16 @@ export default {
 
         closeNotification() {
             this.isShowNotification = false;
+        }
+    },
+    mounted() {
+        this.timer = setTimeout(() => {
+            this.isShowNotification = true
+        }, 5000);
+    },
+    watch: {
+        isUserSubscribe: function () {
+            clearTimeout(this.timer);
         }
     }
 }

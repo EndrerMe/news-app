@@ -124,7 +124,7 @@ export default {
             this.provider.context = this.$refs['canvas'].getContext('2d', "mybackground", window.innerHeight, window.innerWidth);
 
             if (window.innerWidth <= 840) {
-                this.dotsCol = 70;
+                this.dotsCol = 80;
                 this.dots = [];
                 for (let j = 0; j < this.dotsCol; j++) {
                     this.dots.push({
@@ -141,7 +141,7 @@ export default {
             }
 
             if (window.innerWidth < 640) {
-                this.dotsCol = 40;
+                this.dotsCol = 60;
                 this.dots = [];
                 for (let j = 0; j < this.dotsCol; j++) {
                     this.dots.push({
