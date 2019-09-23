@@ -15,11 +15,6 @@
         <div class="current-rate-container">
             <h2 class="current-rate">{{ rateAmount }} {{ currentRate }}: {{ exchangeName }} {{ exchangeTo }}</h2>
         </div>
-        <!-- <div class="rate-items">
-            <div class="rate-item" v-for="value of itemValue">
-                <h3 class="rate">{{ value }}: {{ rates[value] }}</h3>
-            </div>
-        </div> -->
 
         <div v-show="isLoaderShow" class="loader-container">
             <loader class="loader"></loader>
@@ -43,9 +38,6 @@ import _ from 'lodash'
                 ratesValue: {},
                 currentRate: 'USD',
                 currentRateValue: '',
-                // valuesFrom: ['GBP', 'EUR', 'RUB', 'CHF'],
-                // valuesTo: ['EUR', 'GBP', 'RUB', 'CHF'],
-                // itemValue: ['EUR', 'GBP', 'RUB', 'CHF'],
                 exchangeTo: '',
                 exchangeName: 'EUR',
                 rateAmount: 100,
@@ -54,11 +46,6 @@ import _ from 'lodash'
         },
         created() {
             this.isLoaderShow = true;
-            // for (let i = 0; i < this.itemValue.length; i++) {
-            //     if (this.itemValue[i] === this.currentRate) {
-            //         this.itemValue.splice(i,1);
-            //     }
-            // }
 
             ratesService.getRates(this.currentRate).then(res => {
                 for (let i in res.data.rates) {
@@ -67,13 +54,6 @@ import _ from 'lodash'
                 this.ratesValue = res.data.rates;
                 this.isLoaderShow = false;
             });
-
-            // ratesService.getRates(this.currentRate).then(res => {
-            //     let result = this.rates[this.exchangeName];
-            //     this.rates = res.data.rates;
-            //     this.exchangeTo = result;
-            //     this.isLoaderShow = false;
-            // });
 
         },
         methods: {
@@ -145,7 +125,6 @@ import _ from 'lodash'
             },
 
             focusOut() {
-                //this.$refs['rates'].style.paddingTop = '0'
                 this.$emit('toggleHeadAndFoot', true);
             }
         }

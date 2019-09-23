@@ -48,7 +48,6 @@ export default {
     mounted() {
         if (this.sendedNews) {
             this.news = this.sendedNews;
-            console.log(this.news.urlToImage)
         }
     },
     created() {

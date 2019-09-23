@@ -105,53 +105,6 @@ export default {
             });
         },
 
-        // Widget moveable functions
-        mouseDown(e) {
-            // let x;
-            // let y;
-            // let blockX = this.$refs['widget'].getBoundingClientRect().left;
-            // let blockY = this.$refs['widget'].getBoundingClientRect().top;
-
-            // if (e.clientY && e.clientX) {
-            //     x = e.clientX;
-            //     y = e.clientY
-            // } else if (e.touches[0].clientX && e.touches[0].clientY) {
-            //     x = e.touches[0].clientX;
-            //     y = e.touches[0].clientY
-            // }
-
-            // this.blockPosition = {
-            //     left: x + (x - blockX) + 'px',
-            //     top: y + (y - blockY) + 'px',
-            // }
-
-            // this.isMouseDown = true;
-        },
-
-        mouseUp() {
-            //this.isMouseDown = false;
-        },
-
-        changePosition(e) {
-            // if (this.isMouseDown) {
-            //     let x;
-            //     let y;
-            //     let blockX = this.$refs['widget'].getBoundingClientRect().left;
-            //     let blockY = this.$refs['widget'].getBoundingClientRect().top;
-                
-            //     if (e.clientY && e.clientX) {
-            //         x = e.clientX;
-            //         y = e.clientY;
-            //     } else if (e.touches[0].clientX && e.touches[0].clientY) {
-            //         x = e.touches[0].clientX;
-            //         y = e.touches[0].clientY
-            //     }
-
-            //     this.blockPosition.left = x + (x - blockX) + 'px';
-            //     this.blockPosition.top = y + (y - blockY) + 'px';
-            // }
-        },
-
         changeTemp(temp) {
             let value = this.userCoutry;
 
@@ -183,8 +136,6 @@ export default {
     .weather {
         position: absolute;
         display: flex;
-        /* align-items: center;
-        justify-content: center; */
         width: 100%;
         height: 100%;
         top: 0;
@@ -214,7 +165,6 @@ export default {
         flex-direction: column;
         width: 550px;
         height: 200px;
-        /* margin: auto auto; */
         background-color: #fcfdfd;
         border-radius: 9px;
         padding: 25px;
