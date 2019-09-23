@@ -1,7 +1,6 @@
 <template>
     <div class="weather">
         <div class="widget" ref='widget' :style='blockPosition'>
-            <!-- <span class="draggable">(draggable)</span> -->
             <span class="probablyCountry-container">Did you mean
                 <span @click="getWeather('probably')" class="probablyCountry">{{ probablyCountry }}?</span>
             </span>
