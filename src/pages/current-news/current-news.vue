@@ -10,7 +10,7 @@
                       inline-template class="shared">
                 <div>
                     <network network="facebook" class="social">
-                        <img class="social" src="./../../assets/images/facebook-48.png" alt="facebooke">
+                        <img class="social" src="./../../assets/images/facebook-48.png" alt="facebook">
                     </network>
                     <network network="linkedin" class="social">
                         <img class="social" src="./../../assets/images/linkedin-48.png" alt="linkedin">
