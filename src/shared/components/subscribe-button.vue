@@ -8,9 +8,9 @@
 export default {
     name: 'subscribeButton',
     methods: {
-            showSubscribe() {
-                this.$emit('showSubscribe', true)
-            },
+        showSubscribe() {
+            this.$emit('showSubscribe', true)
+        },
     }
 }
 </script>

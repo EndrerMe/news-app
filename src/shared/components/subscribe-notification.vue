@@ -35,6 +35,7 @@ export default {
     },
     watch: {
         isUserSubscribe: function () {
+            this.isShowNotification = false;
             clearTimeout(this.timer);
         }
     }
