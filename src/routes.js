@@ -7,7 +7,8 @@ import Weather from './pages/weather/weather';
 const routes = [
     {
         path: '/',
-        redirect: { name: 'Home' }
+        component: Home,
+        alias: '/Home'
     },
     {
         path: '/Home',

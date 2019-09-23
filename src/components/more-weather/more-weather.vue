@@ -1,37 +1,61 @@
 <template>
     <div class="more">
         <div class="container">
-            <div class="close">
+            <div class="close" @click='closePopup()'>
                 <span class="close-line"></span>
             </div>
             <ul>
-                <li>Country: {{ currentWeather.sys.country }}</li>
-                <li>Min Temperature: {{ currentWeather.main.temp_min }}</li>
-                <li>Max Temperature: {{ currentWeather.main.temp_max }}</li>
-                <li>Temperature: {{ currentWeather.main.temp }}</li>
-                <li>weather: {{ currentWeather.weather[0].description }} <img :src='weatherImg'> </li>
-                <li>Humidity: {{ currentWeather.main.humidity }}</li>
-                <li>Wind Speed: {{ currentWeather.wind.speed }}</li>
+                <li class="weather-style">Show weather in 
+                    <span class="temp-symbol" v-bind:class="{ active: !isCelsius }" @click='changeTemp("fahrenheit")'>F</span>
+                    <span> | </span>
+                    <span class="temp-symbol" v-bind:class="{ active: isCelsius }" @click='changeTemp("celsius")'>&#8451</span>
+                </li>
+                <li>Country: {{ weather.sys.country }}</li>
+                <li>Min Temperature: {{ weather.main.temp_min }}&deg;</li>
+                <li>Max Temperature: {{ weather.main.temp_max }}&deg;</li>
+                <li>Temperature: {{ weather.main.temp }}&deg;</li>
+                <li>weather: {{ weather.weather[0].description }} <img :src='weatherImg'> </li>
+                <li>Humidity: {{ weather.main.humidity }}</li>
+                <li>Wind Speed: {{ weather.wind.speed }}</li>
             </ul>
         </div>
     </div>
 </template>
 
 <script>
+import weatherService from './../../shared/services/weather.service';
+
 export default {
     name: 'more',
     props: ['weather'],
     data() {
         return {
-            currentWeather: {},
-            weatherImg: ''
+            weatherImg: '',
+            isCelsius: true,
         }
     },
     mounted() {
         if (this.weather) {
-            this.currentWeather = this.weather;
-            this.weatherImg = `http://openweathermap.org/img/wn/${this.currentWeather.weather[0].icon}@2x.png`;
-            console.log(this.currentWeather)
+            this.weatherImg = `http://openweathermap.org/img/wn/${this.weather.weather[0].icon}@2x.png`;
+        }
+    },
+    methods: {
+        closePopup() {
+            this.$emit('closePopup', true);
+        },
+
+        changeTemp(temp) {
+            if (temp === 'fahrenheit') {
+                this.isCelsius = false;
+                weatherService.getWeatherByCountry(this.weather.name).then((res) => {
+                    this.weather.main.temp = res.data.main.temp * 1.8 + 32;
+                });
+            } else {
+                this.isCelsius = true;
+                weatherService.getWeatherByCountry(this.weather.name).then((res) => {
+                    this.weather.main.temp = res.data.main.temp;
+                });
+            }
         }
     }
 }
@@ -70,6 +94,12 @@ export default {
         position: absolute;
         top: 15px;
         right: 25px;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
     }
 
     .close-line,
@@ -88,5 +118,13 @@ export default {
     .close-line::after {
         content: '';
         transform: rotate(90deg);
+    }
+
+    .temp-symbol {
+        cursor: pointer;
+    }
+
+    .active {
+        color: blue;
     }
 </style>

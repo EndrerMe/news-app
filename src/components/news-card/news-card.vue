@@ -170,7 +170,7 @@ export default {
 
         .news-img {
             width: 100%;
-            height: 50%;
+            height: 350px;
         }
 
         .pablish-date {

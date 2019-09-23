@@ -8,7 +8,6 @@
 </template>
 
 <script>
-
 import Header from './shared/layouts/header/header';
 import Footer from './shared/layouts/footer/footer';
 import CanvasBg from './shared/components/canvas-bg';

@@ -13,9 +13,9 @@
             <span class="temp">
             {{ temp }}&deg;
             </span>
-            <span class="temp-symbol" @click='changeTemp("fahrenheit")'>F</span>
+            <span class="temp-symbol" v-bind:class="{ active: !isCelsius }" @click='changeTemp("fahrenheit")'>F</span>
             <span> | </span>
-            <span class="temp-symbol" @click='changeTemp("celsius")'>&#8451</span>
+            <span class="temp-symbol" v-bind:class="{ active: isCelsius }" @click='changeTemp("celsius")'>&#8451</span>
         </div>
 
     </div>
@@ -33,6 +33,7 @@ export default {
             location: '',
             date: '',
             coordinates: null,
+            isCelsius: true,
         }
     },
     created() {
@@ -58,10 +59,12 @@ export default {
     methods: {
         changeTemp(temp) {
             if (temp === 'fahrenheit') {
+                this.isCelsius = false;
                 weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
                     this.temp = res.data.main.temp * 1.8 + 32;
                 });
             } else {
+                this.isCelsius = true;
                 weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
                     this.temp = res.data.main.temp;
                 });
@@ -100,5 +103,13 @@ export default {
 
     .left-panel {
         text-align: left;
+    }
+
+    .temp-symbol {
+        cursor: pointer;
+    }
+
+    .active {
+        color: blue;
     }
 </style>

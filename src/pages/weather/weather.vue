@@ -18,15 +18,15 @@
 
                     <div class="temp">
                         <span>Temp {{ temp }}&deg; </span>
-                        <span class="temp-symbol" @click='changeTemp("fahrenheit")'>F</span>
+                        <span class="temp-symbol" v-bind:class="{ active: !isCelsius }" @click='changeTemp("fahrenheit")'>F</span>
                         <span> | </span>
-                        <span class="temp-symbol" @click='changeTemp("celsius")'>&#8451</span>
+                        <span class="temp-symbol" v-bind:class="{ active: isCelsius }" @click='changeTemp("celsius")'>&#8451</span>
                     </div>
                 </div>
             </div>
-            <span @click='showMoreWeather' class="more">More</span>
+            <span @click='showMoreWeather' class="more-btn">More</span>
         </div>
-        <more :weather='moreWeather' v-if='isShowMoreWeather' class="more-popup"></more>
+        <more @closePopup='closePopup' :weather='moreWeather' v-if='isShowMoreWeather' class="more-popup"></more>
     </div>
 </template>
 
@@ -39,7 +39,7 @@ import _ from 'lodash'
 export default {
     name: 'Weather',
     components: {
-        more
+        more,
     },
     data() {
         return {
@@ -58,6 +58,7 @@ export default {
             selected: '',
             moreWeather: null,
             isShowMoreWeather: false,
+            isCelsius: true,
         }
     },
     created() {
@@ -155,10 +156,12 @@ export default {
             let value = this.userCoutry;
 
             if (temp === 'fahrenheit') {
+                this.isCelsius = false;
                 weatherService.getWeatherByCountry(value).then((res) => {
                     this.temp = res.data.main.temp * 1.8 + 32;
                 });
             } else {
+                this.isCelsius = true;
                 weatherService.getWeatherByCountry(value).then((res) => {
                     this.temp = res.data.main.temp;
                 });
@@ -167,6 +170,10 @@ export default {
 
         showMoreWeather() {
             this.isShowMoreWeather = true;
+        },
+
+        closePopup() {
+            this.isShowMoreWeather = false;
         }
     },
 }
@@ -223,10 +230,11 @@ export default {
         width: 100%;
     }
 
-    .more {
+    .more-btn {
         position: absolute;
         bottom: 15px;
         right: 15px;
+        cursor: pointer;
     }
 
     .more-popup {
@@ -262,6 +270,14 @@ export default {
         position: absolute;
         float: right;
         top: 0;
+    }
+
+    .temp-symbol {
+        cursor: pointer;
+    }
+
+    .active {
+        color: blue;
     }
 
     .input-country {

@@ -1,7 +1,6 @@
 <template>
     <div class="footer">
-        <h2>Vue Hot News</h2>
-        <p>© 2019</p>
+        <h2><a href="https://anuitex.com/">Created by Anuitex</a></h2>
     </div>
 </template>
 
@@ -19,15 +18,21 @@ export default {
         flex-direction: column;
         width: 100%;
         background-color: #707070;
-        padding: 25px 0 0 0;
+        padding: 25px 0 25px 0;
     }
 
     h2 {
         color: white;
     }
 
-    p {
+    a {
         color: white;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: white;
+        text-decoration: none;
     }
 
     @media (max-width: 650px) {
