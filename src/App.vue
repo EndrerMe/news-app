@@ -2,7 +2,10 @@
   <div id="app">
     <CanvasBg></CanvasBg>
     <Header v-show='isShowHeaderAndFooter'></Header>
+    <subscribeNotification @showSubscribe='showSubscribe' class="notification"></subscribeNotification>
     <router-view @toggleHeadAndFoot='toggleHeadAndFoot' />
+    <subscribeButton @showSubscribe='showSubscribe'></subscribeButton>
+    <subscribe @closeSubscribe='closeSubscribe' class="subscribe" v-if='isShowSubscribe'></subscribe>
     <Footer v-show='isShowHeaderAndFooter' class="footer"></Footer>
   </div>
 </template>
@@ -10,7 +13,10 @@
 <script>
 import Header from './shared/layouts/header/header';
 import Footer from './shared/layouts/footer/footer';
+import subscribeButton from './shared/components/subscribe-button';
 import CanvasBg from './shared/components/canvas-bg';
+import subscribe from './components/subscribe-popup/subscribe-popup';
+import subscribeNotification from './shared/components/subscribe-notification';
 
 export default {
   name: 'app',
@@ -18,12 +24,19 @@ export default {
     Header,
     Footer,
     CanvasBg,
+    subscribeButton,
+    subscribe,
+    subscribeNotification
   },
   data() {
     return {
       category: null,
       isShowHeaderAndFooter: true,
+      isShowSubscribe: false,
     }
+  },
+  created() {
+
   },
   methods: {
     updateCategory(e) {
@@ -32,6 +45,14 @@ export default {
 
     toggleHeadAndFoot(bool) {
       this.isShowHeaderAndFooter = bool
+    },
+
+    showSubscribe() {
+      this.isShowSubscribe = true;
+    },
+
+    closeSubscribe() {
+      this.isShowSubscribe = false;
     }
   },
 }
@@ -55,5 +76,13 @@ html, body {
   text-align: center;
   color: #2c3e50;
   min-height:100vh;
+}
+
+.subscribe {
+  z-index: 999;
+}
+
+.notification {
+  z-index: 99;
 }
 </style>

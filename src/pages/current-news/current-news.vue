@@ -3,11 +3,23 @@
         <img class="news-img" :src="currentNews.urlToImage" alt="">
         <div class="news-helpers">
             <span class="pablish-date">{{ news.publishedAt | moment("from", "now") }}</span>
-            <div class="shared">
-                <img v-on:click="sharedNews('facebook')" class="social" src="./../../assets/facebook-48.png" alt="facebook">
-                <img v-on:click="sharedNews('linkedin')" class="social" src="./../../assets/linkedin-48.png" alt="linkedin">
-                <img v-on:click="sharedNews('twitter')" class="social" src="./../../assets/twitter-48.png" alt="twitter">
-            </div>
+            <social-sharing url="https://mySait.org/"
+                      :title="currentNews.title"
+                      :description="currentNews.description"
+                      hashtags="news"
+                      inline-template class="shared">
+                <div>
+                    <network network="facebook" class="social">
+                        <img class="social" src="./../../assets/images/facebook-48.png" alt="facebook">
+                    </network>
+                    <network network="linkedin" class="social">
+                        <img class="social" src="./../../assets/images/linkedin-48.png" alt="linkedin">
+                    </network>
+                    <network network="twitter" class="social">
+                        <img class="social" src="./../../assets/images/twitter-48.png" alt="twitter">
+                    </network>
+                </div>
+            </social-sharing>
         </div>
         <div class="news-info">
             <h2>{{ currentNews.title }}</h2>

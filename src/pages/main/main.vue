@@ -1,7 +1,7 @@
 <template>
     <div class="news-page">
         <div class="search-container">
-            <img class="search-icon" src="../../assets/search-icon.png" alt="">
+            <img class="search-icon" src="../../assets/images/search-icon.png" alt="">
             <input class="search" type="text" placeholder="search" v-on:input="searchBytitle($event)" v-model='searchValue'>
         </div>
         <div class="news-content">
@@ -30,7 +30,7 @@ export default {
     name: 'Main',
     components: {
         newsCard,
-        loader
+        loader,
     },
     data() {
         return {
@@ -98,7 +98,7 @@ export default {
                     this.page += 1;
                 }
             }
-        }
+        },
     },
     mounted() {
         if (this.category) {

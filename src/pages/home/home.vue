@@ -83,12 +83,14 @@ export default {
     }
 
     img {
-        height: 100%;
-        width: 40%;
+        height: 170px;
+        width: 170px;
     }
 
     h3 {
         font-size: 1.6vw;
+        height: 170px;
+        overflow: hidden;
     }
 
     .over-requests {
@@ -114,6 +116,10 @@ export default {
     @media (max-width: 1100px) {
         .home-content {
             width: 80%;
+        }
+
+        h3 {
+            height: auto;
         }
 
         p {

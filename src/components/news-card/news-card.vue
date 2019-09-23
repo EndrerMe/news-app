@@ -8,11 +8,23 @@
 
             <router-link class="btn-read" :to="{name: 'News', params: {news}}">Read</router-link>
             <span class="pablish-date">{{ news.publishedAt | moment("from", "now") }}</span>
-            <div class="shared">
-                <img v-on:click="sharedNews('facebook')" class="social" src="./../../assets/facebook-48.png" alt="facebook">
-                <img v-on:click="sharedNews('linkedin')" class="social" src="./../../assets/linkedin-48.png" alt="linkedin">
-                <img v-on:click="sharedNews('twitter')" class="social" src="./../../assets/twitter-48.png" alt="twitter">
-            </div>
+            <social-sharing url="https://mySait.org/"
+                      :title="news.title"
+                      :description="news.description"
+                      hashtags="news"
+                      inline-template class="shared">
+                <div>
+                    <network network="facebook" class="social">
+                        <img class="social" src="./../../assets/images/facebook-48.png" alt="facebook">
+                    </network>
+                    <network network="linkedin" class="social">
+                        <img class="social" src="./../../assets/images/linkedin-48.png" alt="linkedin">
+                    </network>
+                    <network network="twitter" class="social">
+                        <img class="social" src="./../../assets/images/twitter-48.png" alt="twitter">
+                    </network>
+                </div>
+            </social-sharing>
         </div>
     </div>
 </template>
@@ -57,7 +69,7 @@ export default {
         imgPlaceholder(e) {
             this.isImageForbidden = true;
             e.target.src = "https://via.placeholder.com/300"
-        }
+        },
     }
 }
 </script>
@@ -95,6 +107,14 @@ export default {
         position: absolute;
         bottom: 0;
         left: -10px;
+    }
+
+    .subscribe {
+        position: absolute;
+        bottom: 3.8em;
+        left: 0;
+        font-size: 14px;
+        cursor: pointer;
     }
 
     .social {
@@ -201,6 +221,10 @@ export default {
 
         .shared {
             bottom: -5.5em;
+        }
+
+        .subscribe {
+            bottom: -2.9em;
         }
     }
 </style>    
