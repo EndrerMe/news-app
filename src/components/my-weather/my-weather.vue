@@ -42,6 +42,8 @@ export default {
             this.coordinates = coordinates;
             weatherService.getWeather(coordinates.lat, coordinates.lng).then((res) => {
                 this.temp = res.data.main.temp;
+                this.temp = this.temp + '';
+                this.temp = this.temp.split(".")[0];
                 this.location = res.data.name;
                 this.date = new Date().toJSON().slice(0,10).replace(/-/g,'/');
             });
@@ -62,11 +64,15 @@ export default {
                 this.isCelsius = false;
                 weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
                     this.temp = res.data.main.temp * 1.8 + 32;
+                    this.temp = this.temp + '';
+                    this.temp = this.temp.split(".")[0];
                 });
             } else {
                 this.isCelsius = true;
                 weatherService.getWeather(this.coordinates.lat, this.coordinates.lng).then((res) => {
                     this.temp = res.data.main.temp;
+                    this.temp = this.temp + '';
+                    this.temp = this.temp.split(".")[0];
                 });
             }
         }

@@ -6,7 +6,7 @@
             </span>
             <div class="left-panel panel">
                 <div class="city">
-                    <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)">
+                    <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)" @focus="focusOn" @blur="focusOut">
                     <button class="showWeather" @click='getWeather("input")'>Search</button>
                 </div>
                 <div class="info">
@@ -65,6 +65,8 @@ export default {
         weatherService.getWeatherByCountry(this.userCoutry).then((res) => {
             this.moreWeather = res.data;
             this.temp = res.data.main.temp;
+            this.temp = this.temp + '';
+            this.temp = this.temp.split(".")[0];
             this.location = res.data.name;
             this.userCoutry = res.data.name;
 
@@ -96,6 +98,8 @@ export default {
             weatherService.getWeatherByCountry(value).then((res) => {
                 this.moreWeather = res.data;
                 this.temp = res.data.main.temp;
+                this.temp = this.temp + '';
+                this.temp = this.temp.split(".")[0];
                 this.location = res.data.name;
                 this.userCoutry = res.data.name;
                 
@@ -111,11 +115,15 @@ export default {
                 this.isCelsius = false;
                 weatherService.getWeatherByCountry(value).then((res) => {
                     this.temp = res.data.main.temp * 1.8 + 32;
+                    this.temp = this.temp + '';
+                    this.temp = this.temp.split(".")[0];
                 });
             } else {
                 this.isCelsius = true;
                 weatherService.getWeatherByCountry(value).then((res) => {
                     this.temp = res.data.main.temp;
+                    this.temp = this.temp + '';
+                    this.temp = this.temp.split(".")[0];
                 });
             }
         },
@@ -126,6 +134,16 @@ export default {
 
         closePopup() {
             this.isShowMoreWeather = false;
+        },
+
+        focusOn() {
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+                this.$emit('toggleHeadAndFoot', false);
+            }
+        },
+
+        focusOut() {
+            this.$emit('toggleHeadAndFoot', true);
         }
     },
 }
@@ -156,6 +174,7 @@ export default {
 
     .probablyCountry {
         color: blue;
+        cursor: pointer;
     }
 
     div.widget {

@@ -3,7 +3,7 @@
     <CanvasBg></CanvasBg>
     <Header v-show='isShowHeaderAndFooter'></Header>
     <subscribeNotification :isUserSubscribe='isShowNotitfication' @showSubscribe='showSubscribe' class="notification"></subscribeNotification>
-    <router-view @toggleHeadAndFoot='toggleHeadAndFoot' />
+    <router-view @toggleHeadAndFoot='toggleHeadAndFoot'/>
     <subscribeButton @showSubscribe='showSubscribe'></subscribeButton>
     <subscribe @closeSubscribe='closeSubscribe' class="subscribe" v-if='isShowSubscribe'></subscribe>
     <Footer v-show='isShowHeaderAndFooter' class="footer"></Footer>

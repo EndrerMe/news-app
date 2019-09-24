@@ -19,6 +19,7 @@
                 <button class="btn-sub" @click='subscribe'>Subscribe</button>
             </div>
         </div>
+        <div class="bg-close" @click='closeSubscribe'></div>
     </div>
 </template>
 
@@ -80,6 +81,7 @@ export default {
         height: 245px;
         background-color: white;
         border-radius: 15px;
+        z-index: 10;
     }
 
     .close {
@@ -151,5 +153,11 @@ export default {
     .correct-email {
         color: #0ced00;
         font-size: 22px;
+    }
+
+    .bg-close {
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
 </style>

@@ -1,19 +1,21 @@
 <template>
     <div class="rates" ref="rates">
 
-        <div class="rates-type">
-            <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount" @focus="focusOn" @blur="focusOut">
-            <span> Exchange rate from </span>
-            <select v-on:change="changeCurrentRate($event)">
-                <option v-for="value of ratesName" :value="value" v-if="value !== exchangeName" v-bind:selected="value == currentRate">{{ value }}</option>
-            </select>
-            <span> to </span>
-            <select v-on:change="changeRateTo($event)">
-                <option v-for="value of ratesName" :value="value" v-if="value !== currentRate" v-bind:selected="value == exchangeName">{{ value }}</option>
-            </select>
-        </div>
-        <div class="current-rate-container">
-            <h2 class="current-rate">{{ rateAmount }} {{ currentRate }}: {{ exchangeName }} {{ exchangeTo }}</h2>
+        <div class="container">
+            <div class="rates-type">
+                <input v-on:input="changeAmount($event)" type="number" placeholder="Amount" class="amount" @focus="focusOn" @blur="focusOut">
+                <span> Exchange rate from </span>
+                <select v-on:change="changeCurrentRate($event)">
+                    <option v-for="value of ratesName" :value="value" v-if="value !== exchangeName" v-bind:selected="value == currentRate">{{ value }}</option>
+                </select>
+                <span> to </span>
+                <select v-on:change="changeRateTo($event)">
+                    <option v-for="value of ratesName" :value="value" v-if="value !== currentRate" v-bind:selected="value == exchangeName">{{ value }}</option>
+                </select>
+            </div>
+            <div class="current-rate-container">
+                <h2 class="current-rate">{{ rateAmount }} {{ currentRate }}: {{ exchangeName }} {{ exchangeTo }}</h2>
+            </div>
         </div>
 
         <div v-show="isLoaderShow" class="loader-container">
@@ -145,8 +147,10 @@ import _ from 'lodash'
         margin: 0 auto;
     }
 
-    .rates-type {
-        margin-top: -15em;
+    .container {
+        background-color: white;
+        width: 50%;
+        padding: 45px 0;
     }
 
     .current-rate-container {
@@ -204,6 +208,10 @@ import _ from 'lodash'
         .rates-type {
             margin-top: 0;
         }
+
+        .container {
+            width: 80%;
+        }
     }
 
     @media (max-width: 650px) {
@@ -240,6 +248,10 @@ import _ from 'lodash'
     @media (max-width: 670px) {
         .rates-type {
             margin-top: 0;
+        }
+
+        .container {
+            width: 100%;
         }
     }
 </style>

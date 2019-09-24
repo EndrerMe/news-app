@@ -36,6 +36,12 @@ export default {
     },
     mounted() {
         if (this.weather) {
+            this.weather.main.temp = this.weather.main.temp + '';
+            this.weather.main.temp = this.weather.main.temp.split(".")[0];
+            this.weather.main.temp_max = this.weather.main.temp_max + '';
+            this.weather.main.temp_max = this.weather.main.temp_max.split(".")[0];
+            this.weather.main.temp_min = this.weather.main.temp_min + '';
+            this.weather.main.temp_min = this.weather.main.temp_min.split(".")[0];
             this.weatherImg = `http://openweathermap.org/img/wn/${this.weather.weather[0].icon}@2x.png`;
         }
     },
@@ -49,11 +55,27 @@ export default {
                 this.isCelsius = false;
                 weatherService.getWeatherByCountry(this.weather.name).then((res) => {
                     this.weather.main.temp = res.data.main.temp * 1.8 + 32;
+                    this.weather.main.temp = this.weather.main.temp + '';
+                    this.weather.main.temp = this.weather.main.temp.split(".")[0];
+                    this.weather.main.temp_max = res.data.main.temp_max * 1.8 + 32;
+                    this.weather.main.temp_max = this.weather.main.temp_max + '';
+                    this.weather.main.temp_max = this.weather.main.temp_max.split(".")[0];
+                    this.weather.main.temp_min = res.data.main.temp_min * 1.8 + 32;
+                    this.weather.main.temp_min = this.weather.main.temp_min + '';
+                    this.weather.main.temp_min = this.weather.main.temp_min.split(".")[0];
                 });
             } else {
                 this.isCelsius = true;
                 weatherService.getWeatherByCountry(this.weather.name).then((res) => {
                     this.weather.main.temp = res.data.main.temp;
+                    this.weather.main.temp = this.weather.main.temp + '';
+                    this.weather.main.temp = this.weather.main.temp.split(".")[0];
+                    this.weather.main.temp_max = res.data.main.temp_max;
+                    this.weather.main.temp_max = this.weather.main.temp_max + '';
+                    this.weather.main.temp_max = this.weather.main.temp_max.split(".")[0];
+                    this.weather.main.temp_min = res.data.main.temp_min;
+                    this.weather.main.temp_min = this.weather.main.temp_min + '';
+                    this.weather.main.temp_min = this.weather.main.temp_min.split(".")[0];
                 });
             }
         }
@@ -126,5 +148,11 @@ export default {
 
     .active {
         color: blue;
+    }
+
+    @media (max-width: 650px) {
+        .container {
+            width: 80%;
+        }
     }
 </style>
