@@ -1,17 +1,13 @@
 <template>
     <div class="weather">
         <div class="widget" ref='widget' :style='blockPosition'>
-            <span class="probablyCountry-container">Did you mean
-                <span @click="getWeather('probably')" class="probablyCountry">{{ probablyCountry }}?</span>
-            </span>
+            <div class="city">
+                <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
+                    @place_changed="setPlace" @place_enter='test'>
+                </gmap-autocomplete>
+                <button class="showWeather" @click='getWeather("input")'>Search</button>
+            </div>
             <div class="left-panel panel">
-                <div class="city">
-                    <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
-                        @place_changed="setPlace">
-                    </gmap-autocomplete>
-                    <!-- <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)" @focus="focusOn" @blur="focusOut"> -->
-                    <button class="showWeather" @click='getWeather("input")'>Search</button>
-                </div>
                 <div class="info">
                     <div class="weather-info">
                         <span>{{ weather }}</span>
@@ -60,9 +56,7 @@ export default {
             moreWeather: null,
             isShowMoreWeather: false,
             isCelsius: true,
-            autocomplete: null,
-            currentPlace: null
-            
+            autocomplete: null,            
         }
     },
     created() {
@@ -94,11 +88,10 @@ export default {
         getWeather(type) {
             let value;
             if (type === 'input') {
-                value = this.userCoutry;
+                value = this.userCoutry.name;
             } else {
                 value = this.probablyCountry;
             }
-
             weatherService.getWeatherByCountry(value).then((res) => {
                 this.moreWeather = res.data;
                 this.temp = res.data.main.temp;
@@ -151,8 +144,11 @@ export default {
         },
 
         setPlace(place) {
-      this.currentPlace = place;
-    },
+            this.userCoutry = place;
+        },
+        test() {
+            console.log('awdasd')
+        }
     },
     mounted() {
         // let recaptchaScript = document.createElement('script')
@@ -175,7 +171,7 @@ export default {
     }
 
     .showWeather {
-        width: 100%;
+        width: 30%;
         background-color: transparent;
         outline: none;
         border: none;
@@ -232,12 +228,15 @@ export default {
     }
 
     div.city {
+        display: flex;
+        flex-direction: row;
         position: relative;
+        justify-content: space-around;
         font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
         padding-top: 5px;
-        width: 30%;
+        width: 100%;
         color: rgba(0,0,0,0.7);
     }
 
@@ -266,7 +265,7 @@ export default {
         outline: none;
         border: none;
         font-size: 18px;
-        width: 100%;
+        width: 65%;
         border-bottom: 1px solid black;
     }
 
@@ -274,10 +273,6 @@ export default {
         div.widget {
             width: 96%;
             height: 300px;
-        }
-
-        div.city {
-            width: 40%;
         }
 
         div.left-panel {
