@@ -3,13 +3,12 @@
         <div class="widget" ref='widget' :style='blockPosition'>
             <div class="city">
                 <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
-                    @place_changed="setPlace">
+                    @place_changed="setPlace" :value='userCoutry'>
                 </gmap-autocomplete>
                 <button class="showWeather" @click='getWeather()'>Search</button>
             </div>
             <div class="left-panel panel">
                 <div class="info">
-                    <span class="country">Country: {{ userCoutry }}</span>
                     <div class="weather-info">
                         <span>{{ weather }}</span>
                         <img :src="currentWeatherImg">

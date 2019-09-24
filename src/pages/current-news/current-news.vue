@@ -109,6 +109,7 @@ export default {
 
         .news-img {
             width: 100%;
+            margin-top: 150px;
         }
 
         h2 {
