@@ -3,12 +3,13 @@
         <div class="widget" ref='widget' :style='blockPosition'>
             <div class="city">
                 <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
-                    @place_changed="setPlace" @place_enter='test'>
+                    @place_changed="setPlace">
                 </gmap-autocomplete>
-                <button class="showWeather" @click='getWeather("input")'>Search</button>
+                <button class="showWeather" @click='getWeather()'>Search</button>
             </div>
             <div class="left-panel panel">
                 <div class="info">
+                    <span class="country">Country: {{ userCoutry }}</span>
                     <div class="weather-info">
                         <span>{{ weather }}</span>
                         <img :src="currentWeatherImg">
@@ -85,13 +86,9 @@ export default {
             })
         }, 500),
 
-        getWeather(type) {
+        getWeather() {
             let value;
-            if (type === 'input') {
-                value = this.userCoutry.name;
-            } else {
-                value = this.probablyCountry;
-            }
+            value = this.userCoutry;
             weatherService.getWeatherByCountry(value).then((res) => {
                 this.moreWeather = res.data;
                 this.temp = res.data.main.temp;
@@ -144,11 +141,9 @@ export default {
         },
 
         setPlace(place) {
-            this.userCoutry = place;
+            this.userCoutry = place.name;
+            this.getWeather();
         },
-        test() {
-            console.log('awdasd')
-        }
     },
     mounted() {
         // let recaptchaScript = document.createElement('script')
@@ -186,6 +181,10 @@ export default {
     .probablyCountry {
         color: blue;
         cursor: pointer;
+    }
+
+    .country {
+        margin-top: 15px;
     }
 
     div.widget {
