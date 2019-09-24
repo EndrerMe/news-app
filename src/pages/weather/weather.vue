@@ -182,7 +182,6 @@ export default {
         position: relative;
         flex-direction: column;
         width: 550px;
-        height: 200px;
         background-color: #fcfdfd;
         border-radius: 9px;
         padding: 25px;

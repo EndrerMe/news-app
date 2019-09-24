@@ -19,6 +19,8 @@
                 <li>Wind Speed: {{ weather.wind.speed }}</li>
             </ul>
         </div>
+
+        <div class="bg-close" @click='closePopup()'></div>
     </div>
 </template>
 
@@ -100,6 +102,7 @@ export default {
         background-color: white;
         padding: 25px;
         border-radius: 15px;
+        z-index: 10;
     }
 
     ul {
@@ -148,6 +151,12 @@ export default {
 
     .active {
         color: blue;
+    }
+
+    .bg-close {
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
 
     @media (max-width: 650px) {
