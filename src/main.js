@@ -6,7 +6,8 @@ import VueMoment from 'vue-moment';
 import VueDraggableResizable from 'vue-draggable-resizable'
 import Autocomplete from '@trevoreyre/autocomplete-vue'
 import { CoolSelectPlugin } from 'vue-cool-select'
-import SocialSharing from 'vue-social-sharing';
+import SocialSharing from 'vue-social-sharing'
+import * as VueGoogleMaps from "vue2-google-maps";
 // Main Component
 import App from './App.vue'
 // Router Component
@@ -37,9 +38,14 @@ Vue.use(VueRouter);
 Vue.use(VueGeolocation);
 Vue.use(BootstrapVue);
 Vue.use(VueMoment);
-Vue.use(Autocomplete)
+Vue.use(Autocomplete);
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyBF92vAF5WBvXevF2KTeLNBWyoo4vFXe-w",
+    libraries: "places" // necessary for places input
+  }
+});
 const router = new VueRouter({routes})
-
 new Vue({
   render: h => h(App),
   router,

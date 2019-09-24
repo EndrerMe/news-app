@@ -6,7 +6,10 @@
             </span>
             <div class="left-panel panel">
                 <div class="city">
-                    <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)" @focus="focusOn" @blur="focusOut">
+                    <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
+                        @place_changed="setPlace">
+                    </gmap-autocomplete>
+                    <!-- <input class="input-country" type="text" v-model="userCoutry" v-on:input="changecountry($event)" @focus="focusOn" @blur="focusOut"> -->
                     <button class="showWeather" @click='getWeather("input")'>Search</button>
                 </div>
                 <div class="info">
@@ -14,7 +17,6 @@
                         <span>{{ weather }}</span>
                         <img :src="currentWeatherImg">
                     </div>
-
                     <div class="temp">
                         <span>Temp {{ temp }}&deg; </span>
                         <span class="temp-symbol" v-bind:class="{ active: !isCelsius }" @click='changeTemp("fahrenheit")'>F</span>
@@ -58,6 +60,9 @@ export default {
             moreWeather: null,
             isShowMoreWeather: false,
             isCelsius: true,
+            autocomplete: null,
+            currentPlace: null
+            
         }
     },
     created() {
@@ -88,7 +93,6 @@ export default {
 
         getWeather(type) {
             let value;
-
             if (type === 'input') {
                 value = this.userCoutry;
             } else {
@@ -144,8 +148,19 @@ export default {
 
         focusOut() {
             this.$emit('toggleHeadAndFoot', true);
-        }
+        },
+
+        setPlace(place) {
+      this.currentPlace = place;
     },
+    },
+    mounted() {
+        // let recaptchaScript = document.createElement('script')
+        // recaptchaScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAmSCBKTq1UKityU-7yCfV65wwEDLvZe2w&libraries=places')
+        // document.head.appendChild(recaptchaScript)
+
+        // this.autocomplete = new google.maps.places.Autocomplete();
+    }
 }
 </script>
 
