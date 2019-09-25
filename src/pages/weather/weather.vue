@@ -22,6 +22,7 @@
                 </div>
             </div>
             <span @click='showMoreWeather' class="more-btn">More</span>
+            <router-link class="earth-map" :to="{name: 'map3D'}">3d Map</router-link>
         </div>
         <more @closePopup='closePopup' :weather='moreWeather' v-if='isShowMoreWeather' class="more-popup"></more>
     </div>
@@ -143,6 +144,10 @@ export default {
             this.userCoutry = place.name;
             this.getWeather();
         },
+
+        open3DMap() {
+            
+        }
     },
     mounted() {
         // let recaptchaScript = document.createElement('script')
@@ -211,6 +216,14 @@ export default {
         bottom: 15px;
         right: 15px;
         cursor: pointer;
+    }
+
+    .earth-map {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        cursor: pointer;
+        color: rgb(44, 62, 80);;
     }
 
     .more-popup {

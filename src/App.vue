@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <CanvasBg></CanvasBg>
+    <CanvasBg v-show='isShowCanvas'></CanvasBg>
     <Header v-show='isShowHeaderAndFooter'></Header>
     <subscribeNotification :isUserSubscribe='isShowNotitfication' @showSubscribe='showSubscribe' class="notification"></subscribeNotification>
-    <router-view @toggleHeadAndFoot='toggleHeadAndFoot'/>
-    <subscribeButton @showSubscribe='showSubscribe'></subscribeButton>
+    <router-view @toggleHeadAndFoot='toggleHeadAndFoot' @hideAll='hideAll'/>
+    <subscribeButton v-if='isShowSubButton' @showSubscribe='showSubscribe'></subscribeButton>
     <subscribe @closeSubscribe='closeSubscribe' class="subscribe" v-if='isShowSubscribe'></subscribe>
     <Footer v-show='isShowHeaderAndFooter' class="footer"></Footer>
   </div>
@@ -33,7 +33,9 @@ export default {
       category: null,
       isShowHeaderAndFooter: true,
       isShowSubscribe: false,
-      isShowNotitfication: true
+      isShowNotitfication: true,
+      isShowCanvas: true,
+      isShowSubButton: true,
     }
   },
   created() {
@@ -55,6 +57,13 @@ export default {
 
     closeSubscribe() {
       this.isShowSubscribe = false;
+    },
+
+    hideAll(bool) {
+      this.isShowHeaderAndFooter = bool;
+      this.isShowCanvas = bool;
+      this.isShowNotitfication = bool;
+      this.isShowSubButton = bool;
     }
   },
 }
