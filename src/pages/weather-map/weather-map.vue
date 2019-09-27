@@ -1,11 +1,17 @@
 <template>
     <div class="container">
+        <div class="back-container" @click='back'>
+            <img class="back" src="../../assets/images/arrow-left-30.png" alt="">
+        </div>  
         <gmap-map
         :center="center"
         :zoom="12"
         class="gmap"
         style="width:100%;  height: 100%"
         @click="showWeather($event)"
+        :options="{
+            mapTypeControl: false,
+        }"
         >
         </gmap-map>
 
@@ -39,7 +45,7 @@
 import weatherService from './../../shared/services/weather.service';
 
 export default {
-    name: 'map3D',
+    name: 'weatherMap',
     data() {
         return {
             center: { lat: 45.508, lng: -73.587 },
@@ -107,6 +113,10 @@ export default {
                     this.currentWeather.main.temp_min = this.currentWeather.main.temp_min.split(".")[0];
                 });
             }
+        },
+
+        back() {
+            this.$router.push({name: 'Weather'})
         }
     }
 }
@@ -195,6 +205,19 @@ export default {
         position: absolute;
         width: 100%;
         height: 100%;
+    }
+
+    .back-container {
+        position: absolute;
+        z-index: 101;
+        top: 20px;
+        cursor: pointer;
+    }
+
+    @media (max-width: 650px) {
+        .weather {
+            width: 80%;
+        }
     }
 
 </style>

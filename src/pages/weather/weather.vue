@@ -22,7 +22,7 @@
                 </div>
             </div>
             <span @click='showMoreWeather' class="more-btn">More</span>
-            <router-link class="earth-map" :to="{name: 'map3D'}">3d Map</router-link>
+            <router-link class="earth-map" :to="{name: 'weatherMap'}">Weather Map</router-link>
         </div>
         <more @closePopup='closePopup' :weather='moreWeather' v-if='isShowMoreWeather' class="more-popup"></more>
     </div>
@@ -42,18 +42,13 @@ export default {
     data() {
         return {
             temp: '',
-            location: '',
             userCoutry: 'London',
             currentWeatherImg: '',
             weather: '',
-            isMouseDown: false,
-            block: null,
             probablyCountry: 'London',
             blockPosition: {
                 margin: 'auto auto'
             },
-            items: ['London', 'Chicago', 'New York'],
-            selected: '',
             moreWeather: null,
             isShowMoreWeather: false,
             isCelsius: true,
@@ -61,13 +56,11 @@ export default {
         }
     },
     created() {
-        this.isMouseDown = false;
         weatherService.getWeatherByCountry(this.userCoutry).then((res) => {
             this.moreWeather = res.data;
             this.temp = res.data.main.temp;
             this.temp = this.temp + '';
             this.temp = this.temp.split(".")[0];
-            this.location = res.data.name;
             this.userCoutry = res.data.name;
 
             this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
@@ -94,7 +87,6 @@ export default {
                 this.temp = res.data.main.temp;
                 this.temp = this.temp + '';
                 this.temp = this.temp.split(".")[0];
-                this.location = res.data.name;
                 this.userCoutry = res.data.name;
                 
                 this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
@@ -144,17 +136,8 @@ export default {
             this.userCoutry = place.name;
             this.getWeather();
         },
-
-        open3DMap() {
-            
-        }
     },
     mounted() {
-        // let recaptchaScript = document.createElement('script')
-        // recaptchaScript.setAttribute('src', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAmSCBKTq1UKityU-7yCfV65wwEDLvZe2w&libraries=places')
-        // document.head.appendChild(recaptchaScript)
-
-        // this.autocomplete = new google.maps.places.Autocomplete();
     }
 }
 </script>

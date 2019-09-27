@@ -1,6 +1,5 @@
 <template>
-    <div class="weather" ref='weather'>
-            
+    <div class="weather" ref='weather'>  
         <div class="left-panel panel">
             <span class="date">{{ date | moment("dddd") }}</span>
             <br>

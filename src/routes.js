@@ -3,7 +3,7 @@ import News from './pages/current-news/current-news'
 import ExchangeRages from './pages/exchange-rates/exchange-rates'
 import Home from './pages/home/home';
 import Weather from './pages/weather/weather';
-import map3D from './pages/3d-map/3d-map';
+import weatherMap from './pages/weather-map/weather-map';
 
 const routes = [
     {
@@ -46,9 +46,9 @@ const routes = [
         component: Weather,
     },
     {
-        path: '/map3D',
-        name: 'map3D',
-        component: map3D,
+        path: '/weather-map',
+        name: 'weatherMap',
+        component: weatherMap,
     }
 ];
 
