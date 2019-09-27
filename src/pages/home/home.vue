@@ -85,6 +85,7 @@ export default {
     img {
         height: 170px;
         width: 170px;
+        object-fit: contain;
     }
 
     h3 {
