@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: 'news-app',
+    outputDir: 'NewsApp/wwwroot',
     devServer: {
         proxy: 'https://maps.googleapis.com/maps/',
     },

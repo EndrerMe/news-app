@@ -7,7 +7,7 @@
 
             <div class="content">
                 <span>You subscribe on 
-                    <select name="" id="">
+                    <select name="" id="" v-model='category'>
                         <option value="all">All</option>
                         <option v-for='categiry of categories' :value="categiry">{{ categiry }}</option>
                     </select>
@@ -32,6 +32,7 @@ export default {
             isIncorrectEmail: false,
             correctEmail: false,
             categories: ['Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology'],
+            category:'',
         }
     },
     methods: {
@@ -53,6 +54,8 @@ export default {
                 }, 3000)
             } else {
                 this.correctEmail = true;
+                addSubscroption(this.email, this.category);
+
                 setTimeout(() => {
                     this.correctEmail = false;
                     this.$emit('closeSubscribe', false);
