@@ -15,7 +15,6 @@ import routes from './routes';
 // Fonts
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // Bootstrap
 import BootstrapVue from 'bootstrap-vue'
