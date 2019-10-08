@@ -4,6 +4,6 @@ export const environment = {
     ratesApiUrl: 'https://api.exchangeratesapi.io/latest?',
     weatherApiKey: '&appid=e94f4dabf46ec78b61c0d640a63e3b06',
     weatherApiUrl: 'http://api.openweathermap.org/data/2.5/weather?',
-    googleApiKey: 'AIzaSyAmSCBKTq1UKityU-7yCfV65wwEDLvZe2w',
+    googleApiKey: 'AIzaSyDrb3RRdq1k7GmI4Zji4YpKNOqtpXmVjEU',
     googleApiUrl: 'api/place/autocomplete/json?'
 }
