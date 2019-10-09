@@ -1,10 +1,10 @@
-﻿using Entities.Enums;
+﻿using Models;
 using System.Threading.Tasks;
 
 namespace Services.Interfaces
 {
     public interface ISubscriptionService
     {
-        Task<bool> AddSubscription(string email, Category category);
+        Task<bool> AddSubscription(SubcsriptionModel model);
     }
 }

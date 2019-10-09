@@ -6,9 +6,10 @@
             </div>
 
             <div class="content">
-                <span>You subscribe on 
+                <span>
+                    You subscribe on
                     <select name="" id="" v-model='category'>
-                        <option value="all">All</option>
+                        <option v-model='category' value="all">All</option>
                         <option v-for='categiry of categories' :value="categiry">{{ categiry }}</option>
                     </select>
                     News
@@ -24,46 +25,48 @@
 </template>
 
 <script>
-export default {
-    name: 'subscribe',
-    data() {
-        return {
-            email: '',
-            isIncorrectEmail: false,
-            correctEmail: false,
-            categories: ['Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology'],
-            category:'',
-        }
-    },
-    methods: {
-        closeSubscribe() {
-            this.$emit('closeSubscribe', false)
-        },
+    import subscriptionrService from './../../shared/services/subscription.service';
 
-        validateEmail(email) {
-            let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return re.test(email);
-        },
-
-        subscribe() {
-            let isEmailValid = this.validateEmail(this.email);
-            if (!isEmailValid) {
-                this.isIncorrectEmail = true;
-                setTimeout(() => {
-                    this.isIncorrectEmail = false
-                }, 3000)
-            } else {
-                this.correctEmail = true;
-                addSubscroption(this.email, this.category);
-
-                setTimeout(() => {
-                    this.correctEmail = false;
-                    this.$emit('closeSubscribe', false);
-                }, 2000)
+    export default {
+        name: 'subscribe',
+        data() {
+            return {
+                email: '',
+                isIncorrectEmail: false,
+                correctEmail: false,
+                categories: ['Business', 'Entertainment', 'Health', 'Science', 'Sports', 'Technology'],
+                category: '',
             }
-        }   
+        },
+        methods: {
+            closeSubscribe() {
+                this.$emit('closeSubscribe', false)
+            },
+
+            validateEmail(email) {
+                let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            },
+
+            subscribe() {
+                let isEmailValid = this.validateEmail(this.email);
+                if (!isEmailValid) {
+                    this.isIncorrectEmail = true;
+                    setTimeout(() => {
+                        this.isIncorrectEmail = false
+                    }, 3000)
+                } else {
+                    this.correctEmail = true;
+                    subscriptionrService.addSubscroption(this.email, this.category);
+
+                    setTimeout(() => {
+                        this.correctEmail = false;
+                        this.$emit('closeSubscribe', false);
+                    }, 2000)
+                }
+            }
+        }
     }
-}
 </script>
 
 <style scoped>
@@ -112,10 +115,10 @@ export default {
         transform: rotate(45deg);
     }
 
-    .close-line::after {
-        content: '';
-        transform: rotate(90deg);
-    }
+        .close-line::after {
+            content: '';
+            transform: rotate(90deg);
+        }
 
     .content {
         display: flex;
@@ -144,15 +147,15 @@ export default {
         transition: .3s;
     }
 
-    .btn-sub:hover {
-        background-color: #ff3e30;
-    }
+        .btn-sub:hover {
+            background-color: #ff3e30;
+        }
 
     .incorrect-email {
         color: red;
         font-size: 22px;
     }
-    
+
     .correct-email {
         color: #0ced00;
         font-size: 22px;

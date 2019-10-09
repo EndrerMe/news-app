@@ -1,8 +1,10 @@
 ﻿using Entities;
-using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
+using NewsAPI.Constants;
 using Repositories.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Repositories
@@ -18,7 +20,7 @@ namespace Repositories
             _set = _context.Set<Subscription>();
         }
 
-        public async Task<bool> InsertSubscription(Subscription subscription)
+        public async Task<bool> InsertSubscriptionAsync(Subscription subscription)
         {
             Subscription oldRecord = await _set.FirstOrDefaultAsync(x => x.Email == subscription.Email && x.Category == subscription.Category);
             if (oldRecord != null)
@@ -28,12 +30,19 @@ namespace Repositories
 
             var result = await _set.AddAsync(subscription);
 
-            if (result != null)
+            if (result.State == EntityState.Added)
             {
+                await _context.SaveChangesAsync();
                 return true;
             }
 
             return false;
+        }
+
+        public async Task<List<Subscription>> GetSubscriptionsByCategoryAsync(Categories category)
+        {
+            List<Subscription> result = await _set.Where(x => x.Category == category).ToListAsync();
+            return result;
         }
     }
 }

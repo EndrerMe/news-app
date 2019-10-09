@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Models;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Entities.Enums;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.Interfaces;
 
@@ -23,16 +19,14 @@ namespace NewsApp.Controller
 
         [Route("/addSubscription")]
         [HttpPost]
-        public async Task<ActionResult> AddSubsctiption(string email, Category category)
+        public async Task<ActionResult> AddSubsctiption(SubcsriptionModel model)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
                 return BadRequest("You shuold provide valid email");
             }
 
-            MailAddress mailAddress = new MailAddress(email);
-
-            bool result = await _subscriptionService.AddSubscription(email, category);
+            bool result = await _subscriptionService.AddSubscription(model);
 
             if (result)
             {

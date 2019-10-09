@@ -64,7 +64,7 @@ export default {
     data() {
         return {
             currentUrl: null,
-            categories: ['Business', 'Entertainment', 'General', 'Health', 'Science', 'Sports', 'Technology'],
+            categories: ['Business', 'Entertainment', 'Health', 'Science', 'Sports', 'Technology'],
             countries: [
                 {
                     name: 'United Arab Emirates',

@@ -39,3 +39,7 @@ yarn-error.log*
 /Repositories/obj
 /Services/bin/Debug/netcoreapp2.2
 /Services/obj
+/BackgroundServices/bin/Debug/netcoreapp3.0
+/BackgroundServices/obj
+/Models/bin/Debug/netcoreapp2.2
+/Models/obj

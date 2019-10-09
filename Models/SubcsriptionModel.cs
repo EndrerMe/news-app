@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using NewsAPI.Constants;
+﻿using NewsAPI.Constants;
 
-namespace Entities
+namespace Models
 {
-    public class Subscription : BaseEntity
+    public class SubcsriptionModel
     {
         public string Email { get; set; }
         public Categories Category { get; set; }

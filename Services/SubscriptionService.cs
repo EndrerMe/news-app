@@ -1,5 +1,5 @@
 ﻿using Entities;
-using Entities.Enums;
+using Models;
 using Repositories.Interfaces;
 using Services.Interfaces;
 using System;
@@ -16,16 +16,17 @@ namespace Services
             _subscriptionRepository = subscriptionRepository;
         }
 
-        public async Task<bool> AddSubscription(string email, Category category)
+        public async Task<bool> AddSubscription(SubcsriptionModel model)
         {
             var subscribtion = new Subscription()
             {
-                Email = email,
-                Category = category,
+                Email = model.Email,
+                Category = model.Category,
+                SubscribeAll = model.SubscribeAll,
                 Created = DateTime.UtcNow
             };
 
-            bool result = await _subscriptionRepository.InsertSubscription(subscribtion);
+            bool result = await _subscriptionRepository.InsertSubscriptionAsync(subscribtion);
 
             return result;
         }
