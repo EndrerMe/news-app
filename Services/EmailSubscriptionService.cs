@@ -10,6 +10,7 @@ using System;
 using Repositories.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;
+using System.IO;
 
 namespace Services
 {
@@ -54,15 +55,12 @@ namespace Services
 
             try
             {
-
                 foreach (Subscription sub in subscriptions)
                 {
                     using (var client = new SmtpClient())
                     {
                         await client.ConnectAsync(smptServer, 465, true);
                         await client.AuthenticateAsync(smplLogin, smtpPassword);
-
-
 
                         var emailMessage = await PrepareEmailMessage(news, sub);
                         await client.SendAsync(emailMessage);
@@ -84,10 +82,10 @@ namespace Services
 
             ArticlesResult newsResponse = await newsApiClient.GetTopHeadlinesAsync(new TopHeadlinesRequest
             {
-                Language = Languages.EN,
                 Category = category,
                 Page = page,
-                PageSize = pageSize
+                PageSize = pageSize,
+                Country = Countries.US
             });
 
             return newsResponse;
@@ -97,15 +95,47 @@ namespace Services
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "login@yandex.ru"));
+            emailMessage.From.Add(new MailboxAddress("News for you!", "noreply@plz.2me"));
             emailMessage.To.Add(new MailboxAddress("", subscription.Email));
             emailMessage.Subject = "We got some news for you!";
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = "Some test mail text"
+                Text = await BuildEmailText(news)
             };
 
             return emailMessage;
+        }
+
+        private async Task<string> BuildEmailText(List<Article> news)
+        {
+            string emailBoby = "";
+            string newsWrapper = "";
+
+            string content = "";
+
+            using (StreamReader reader = new StreamReader("../email-template/news.html"))
+            {
+                newsWrapper = await reader.ReadToEndAsync();
+            }
+
+            foreach (Article article in news)
+            {
+                string articleContent = newsWrapper;
+                articleContent = articleContent.Replace("{Title}", article.Title);
+                articleContent = articleContent.Replace("{ImageUrl}", article.UrlToImage);
+                articleContent = articleContent.Replace("{Url}", article.Url);
+
+                content += articleContent;
+            }
+
+            using (StreamReader reader = new StreamReader("../email-template/index.html"))
+            {
+                emailBoby = await reader.ReadToEndAsync();
+            }
+
+            emailBoby = emailBoby.Replace("{News}", content);
+
+            return emailBoby;
         }
     }
 }
