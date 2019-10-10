@@ -13,10 +13,10 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BackgroundServices
 {
-    public class BackgroundEmailNewsSender : BackgroundService
+    public class BackgroundEmailNewsSender : BackgroundService //Background tast to send emails with news
     {
         private readonly ILogger<BackgroundEmailNewsSender> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IServiceScopeFactory _serviceScopeFactory; //DI container
 
         public BackgroundEmailNewsSender(ILogger<BackgroundEmailNewsSender> logger, IServiceScopeFactory serviceScopeFactory)
         {
@@ -40,7 +40,7 @@ namespace BackgroundServices
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var emailSubscriptionService = scope.ServiceProvider.GetService<IEmailSubscriptionService>();
+                var emailSubscriptionService = scope.ServiceProvider.GetService<IEmailSubscriptionService>();//get from DI container
                 List<Categories> categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
 
                 foreach (var category in categories)

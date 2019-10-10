@@ -6,7 +6,6 @@ namespace Repositories
     public class NewsAppContext : DbContext
     {
         public DbSet<Subscription> Subscriptions { get; set; }
-        public DbSet<SubscriptionNewsSend> SubscriptionNewsSends { get; set; }
 
         public NewsAppContext(): base()
         { }
@@ -19,12 +18,6 @@ namespace Repositories
             base.OnModelCreating(builder);
 
             builder.Entity<Subscription>(entity =>
-            {
-                entity.Property(p => p.Id)
-                      .ValueGeneratedNever();
-            });
-            
-            builder.Entity<SubscriptionNewsSend>(entity =>
             {
                 entity.Property(p => p.Id)
                       .ValueGeneratedNever();

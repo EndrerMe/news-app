@@ -33,8 +33,9 @@ namespace Services
             {
                 var result = await GetLatestNewsFromApi(category, pageCount);
                 newsArticles.AddRange(result.Articles);
+                pageCount++;
 
-                isChecked = newsArticles.Last().PublishedAt < DateTime.UtcNow.AddMinutes(-30);
+                isChecked = newsArticles.Last().PublishedAt < DateTime.Today.AddDays(-1);
             }
             while (!isChecked);
 
@@ -50,7 +51,7 @@ namespace Services
         public async Task SendNewsToSubscribers(List<Article> news, List<Subscription> subscriptions)
         {
             string smptServer = "smtp.gmail.com";
-            string smplLogin = "CampaTstPrereq@gmail.com";
+            string smplLogin = "CampaTstPrereq@gmail.com"; //TODO: Change creds
             string smtpPassword = "Yrq3AwZAtMTY";
 
             try
@@ -96,7 +97,7 @@ namespace Services
             var emailMessage = new MimeMessage();
 
             emailMessage.From.Add(new MailboxAddress("News for you!", "noreply@plz.2me"));
-            emailMessage.To.Add(new MailboxAddress("", subscription.Email));
+            emailMessage.To.Add(new MailboxAddress(string.Empty, subscription.Email));
             emailMessage.Subject = "We got some news for you!";
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
@@ -108,10 +109,9 @@ namespace Services
 
         private async Task<string> BuildEmailText(List<Article> news)
         {
-            string emailBoby = "";
-            string newsWrapper = "";
-
-            string content = "";
+            string emailBoby = String.Empty;
+            string newsWrapper = String.Empty;
+            string content = String.Empty;
 
             using (StreamReader reader = new StreamReader("../email-template/news.html"))
             {
