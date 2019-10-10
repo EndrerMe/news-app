@@ -5,7 +5,6 @@
         name: 'subscriptionService',
 
         addSubscroption(email, category) {
-            debugger;
             let subscribeAll = false;
 
             if (category == null || category == undefined || category == ''|| category == 'all') {

@@ -2,11 +2,12 @@
     <div class="weather">
         <div class="widget" ref='widget' :style='blockPosition'>
             <div class="city">
-                <input type="text" class="input-country" :value='userCoutry' @change="changecountry($event)">
+                <input type="text" class="input-country" :value='userCity' v-on:input="changecountry($event)">
                 <button class="showWeather" @click='getWeather()'>Search</button>
             </div>
-            <div class="hint" v-if='probablyCountry'>
-                <p class="hint-value">Did you mean {{probablyCountry}}?</p>
+            <div class="hint" v-if='probablyCity'>
+                <p class="hint-value">Did you mean <span class="probably-city">{{ probablyCity[cityArrayNumber].name }}({{ probablyCity[cityArrayNumber].country }})</span>?</p>
+                <img src="./../../assets/images/refresh.png" class="refresh-city" @click='refreshCity'>
             </div>
             <div class="left-panel panel">
                 <div class="info">
@@ -31,7 +32,7 @@
 
 <script>
 import weatherService from './../../shared/services/weather.service';
-import autocompleteService from './../../shared/services/autocomplete.service';
+import lifeSearchService from './../../shared/services/lifeSearch.service';
 import more from './../../components/more-weather/more-weather'
 import _ from 'lodash'
 
@@ -43,13 +44,14 @@ export default {
     data() {
         return {
             temp: '',
-            userCoutry: 'London',
+            userCity: 'London',
             currentWeatherImg: '',
             weather: '',
-            probablyCountry: null,
+            probablyCity: null,
             blockPosition: {
                 margin: 'auto auto'
             },
+            cityArrayNumber: 0,
             moreWeather: null,
             isShowMoreWeather: false,
             isCelsius: true,
@@ -57,12 +59,12 @@ export default {
         }
     },
     created() {
-        weatherService.getWeatherByCountry(this.userCoutry).then((res) => {
+        weatherService.getWeatherByCountry(this.userCity).then((res) => {
             this.moreWeather = res.data;
             this.temp = res.data.main.temp;
             this.temp = this.temp + '';
             this.temp = this.temp.split(".")[0];
-            this.userCoutry = res.data.name;
+            this.userCity = res.data.name;
 
             this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
             this.weather = res.data.weather[0].description
@@ -71,20 +73,32 @@ export default {
     methods: {
         changecountry:_.debounce(function(event) {
             const value = event.target.value;
-
-            // request
+            this.userCity = value;
+            lifeSearchService.getDataForLifeSearch(value).then((res) => {
+                this.probablyCity = res.data.data;
+            }, (err) => {
+                console.log(err)
+            })
 
         }, 1000),
 
+        refreshCity() {
+            if(this.cityArrayNumber === this.probablyCity.lenght) {
+                this.cityArrayNumber = 0;
+            } else {
+                this.cityArrayNumber += 1;
+            }
+        },
+
         getWeather() {
             let value;
-            value = this.userCoutry;
+            value = this.userCity;
             weatherService.getWeatherByCountry(value).then((res) => {
                 this.moreWeather = res.data;
                 this.temp = res.data.main.temp;
                 this.temp = this.temp + '';
                 this.temp = this.temp.split(".")[0];
-                this.userCoutry = res.data.name;
+                this.userCity = res.data.name;
                 
                 this.currentWeatherImg = `http://openweathermap.org/img/wn/${res.data.weather[0].icon}@2x.png`
                 this.weather = res.data.weather[0].description
@@ -92,7 +106,7 @@ export default {
         },
 
         changeTemp(temp) {
-            let value = this.userCoutry;
+            let value = this.userCity;
 
             if (temp === 'fahrenheit') {
                 this.isCelsius = false;
@@ -130,7 +144,7 @@ export default {
         },
 
         setPlace(place) {
-            this.userCoutry = place.name;
+            this.userCity = place.name;
             this.getWeather();
         },
     },
@@ -147,6 +161,12 @@ export default {
         height: 100%;
         top: 0;
         overflow: hidden;
+    }
+
+    .refresh-city {
+        width: 26px;
+        height: 26px;
+        cursor: pointer;
     }
 
     .showWeather {
@@ -172,11 +192,17 @@ export default {
     }
 
     .hint {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         margin-top: 17px;
     }
 
     .hint-value {
         font-size: 18px;
+        margin-bottom: 0;
     }
 
     div.widget {
@@ -203,6 +229,10 @@ export default {
         position: absolute;
         bottom: 15px;
         right: 15px;
+        cursor: pointer;
+    }
+
+    .probably-city {
         cursor: pointer;
     }
 
