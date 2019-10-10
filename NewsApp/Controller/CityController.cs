@@ -25,7 +25,7 @@ namespace NewsApp.Controller
         public async Task<ActionResult> FindCityByName(string name)
         {
             SearchCityResultModel result = await _cityService.FindCityByNameAsync(name);
-            return Ok();
+            return Ok(result);
         }
     }
 }
