@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Repositories;
 using Services;
 using Repositories.Interfaces;
+using Entities;
 
 namespace NewsApp
 {
@@ -39,7 +40,7 @@ namespace NewsApp
 
             services.Scan(scan => scan
                 .FromAssemblyOf<SubscriptionRepository>()
-                .AddClasses(classes => classes.AssignableTo(typeof(ISubscriptionRepository)))
+                .AddClasses(classes => classes.Where(type => type.Name.EndsWith("Repository")))
                 .AsImplementedInterfaces()
                 .WithTransientLifetime()
             );

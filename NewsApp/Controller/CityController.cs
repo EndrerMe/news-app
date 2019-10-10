@@ -9,7 +9,6 @@ using Services.Interfaces;
 
 namespace NewsApp.Controller
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class CityController : BaseController
     {
@@ -20,8 +19,8 @@ namespace NewsApp.Controller
             _cityService = cityService;
         }
 
-        [HttpPost]
-        [Route("/searchCity/{name}")]
+        [HttpGet]
+        [Route("/searchCity")]
         public async Task<ActionResult> FindCityByName(string name)
         {
             SearchCityResultModel result = await _cityService.FindCityByNameAsync(name);

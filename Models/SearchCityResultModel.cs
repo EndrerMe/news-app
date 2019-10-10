@@ -9,6 +9,11 @@ namespace Models
         public List<SearchCityResultModelItem> Data { get; set; }
         public bool IsError { get; set; }
         public string ErrorMessage { get; set; }
+
+        public SearchCityResultModel()
+        {
+            Data = new List<SearchCityResultModelItem>();
+        }
     }
 
     public class SearchCityResultModelItem

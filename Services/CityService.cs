@@ -20,7 +20,6 @@ namespace Services
 
         public async Task<SearchCityResultModel> FindCityByNameAsync(string namefilter)
         {
-            await InsertOrUpdateCiliesListAsync();
             var result = new SearchCityResultModel();
             List<City> searchResult = await _cityRepository.FindCityByNameAsync(namefilter);
             foreach (City city in searchResult)

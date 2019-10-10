@@ -24,7 +24,8 @@ namespace Repositories
         {
             try
             {
-                await _context.BulkInsertOrUpdateAsync(cities);
+                await _set.AddRangeAsync(cities);
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -37,7 +38,7 @@ namespace Repositories
 
         public async Task<List<City>> FindCityByNameAsync(string namefilter)
         {
-            List<City> result = await _set.Where(x => x.Name.Contains(namefilter)).ToListAsync();
+            List<City> result = await _set.Where(x => x.Name.ToLower().Contains(namefilter.ToLower())).ToListAsync();
             return result;
         }
     }
