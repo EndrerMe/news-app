@@ -11,8 +11,8 @@ namespace Repositories
 {
     public class SubscriptionRepository : ISubscriptionRepository
     {
-        public NewsAppContext _context;
-        public DbSet<Subscription> _set;
+        private NewsAppContext _context;
+        private DbSet<Subscription> _set;
 
         public SubscriptionRepository(NewsAppContext context)
         {
