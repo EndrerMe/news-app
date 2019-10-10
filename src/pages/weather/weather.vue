@@ -2,10 +2,11 @@
     <div class="weather">
         <div class="widget" ref='widget' :style='blockPosition'>
             <div class="city">
-                <gmap-autocomplete @focus="focusOn" @blur="focusOut" class="input-country"
-                    @place_changed="setPlace" :value='userCoutry'>
-                </gmap-autocomplete>
+                <input type="text" class="input-country" :value='userCoutry' @change="changecountry($event)">
                 <button class="showWeather" @click='getWeather()'>Search</button>
+            </div>
+            <div class="hint" v-if='probablyCountry'>
+                <p class="hint-value">Did you mean {{probablyCountry}}?</p>
             </div>
             <div class="left-panel panel">
                 <div class="info">
@@ -45,7 +46,7 @@ export default {
             userCoutry: 'London',
             currentWeatherImg: '',
             weather: '',
-            probablyCountry: 'London',
+            probablyCountry: null,
             blockPosition: {
                 margin: 'auto auto'
             },
@@ -70,14 +71,10 @@ export default {
     methods: {
         changecountry:_.debounce(function(event) {
             const value = event.target.value;
-            autocompleteService.getDataForAutocomplete(value).then((res) => {
-                let fullCountry = res.data.predictions[0].description;
-                let country = fullCountry.split(',');
-                this.probablyCountry = country[0];
-            }, (err) => {
-                console.log(err)
-            })
-        }, 500),
+
+            // request
+
+        }, 1000),
 
         getWeather() {
             let value;
@@ -172,6 +169,14 @@ export default {
 
     .country {
         margin-top: 15px;
+    }
+
+    .hint {
+        margin-top: 17px;
+    }
+
+    .hint-value {
+        font-size: 18px;
     }
 
     div.widget {
