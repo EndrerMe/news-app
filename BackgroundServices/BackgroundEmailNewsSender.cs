@@ -7,18 +7,21 @@ using Services.Interfaces;
 using NewsAPI.Constants;
 using System.Collections.Generic;
 using System.Linq;
+using NewsAPI.Models;
+using Entities;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BackgroundServices
 {
-    public class BackgroundEmailNewsSender : BackgroundService
+    public class BackgroundEmailNewsSender : BackgroundService //Background tast to send emails with news
     {
         private readonly ILogger<BackgroundEmailNewsSender> _logger;
-        private readonly IEmailSubscriptionService _emailSubscriptionService;
+        private readonly IServiceScopeFactory _serviceScopeFactory; //DI container
 
-        public BackgroundEmailNewsSender(ILogger<BackgroundEmailNewsSender> logger, IEmailSubscriptionService emailSubscriptionService)
+        public BackgroundEmailNewsSender(ILogger<BackgroundEmailNewsSender> logger, IServiceScopeFactory serviceScopeFactory)
         {
             _logger = logger;
-            _emailSubscriptionService = emailSubscriptionService;
+            _serviceScopeFactory = serviceScopeFactory;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -27,17 +30,26 @@ namespace BackgroundServices
             {
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
 
+                SendNewsletter(); // should not been awaited
+
+                await Task.Delay((int)TimeSpan.FromMinutes(1).TotalMilliseconds, stoppingToken);
+            }
+        }
+
+        private async Task SendNewsletter()
+        {
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var emailSubscriptionService = scope.ServiceProvider.GetService<IEmailSubscriptionService>();//get from DI container
                 List<Categories> categories = Enum.GetValues(typeof(Categories)).Cast<Categories>().ToList();
 
                 foreach (var category in categories)
                 {
-                    var news = await _emailSubscriptionService.GetLatestNewsInCategory(category);
-                    var subscriptions = await _emailSubscriptionService.GetSubscroptionsByCategory(category);
+                    List<Article> news = await emailSubscriptionService.GetLatestNewsInCategory(category);
+                    List<Subscription> subscriptions = await emailSubscriptionService.GetSubscroptionsByCategory(category);
 
-                    await _emailSubscriptionService.SendNewsToSubscribers(news, subscriptions);
+                    await emailSubscriptionService.SendNewsToSubscribers(news, subscriptions);
                 }
-
-                await Task.Delay((int)TimeSpan.FromDays(1).TotalMilliseconds, stoppingToken);
             }
         }
     }

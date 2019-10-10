@@ -10,6 +10,7 @@ using System;
 using Repositories.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;
+using System.IO;
 
 namespace Services
 {
@@ -32,8 +33,9 @@ namespace Services
             {
                 var result = await GetLatestNewsFromApi(category, pageCount);
                 newsArticles.AddRange(result.Articles);
+                pageCount++;
 
-                isChecked = newsArticles.Last().PublishedAt < DateTime.UtcNow.AddMinutes(-30);
+                isChecked = newsArticles.Last().PublishedAt < DateTime.Today.AddDays(-1);
             }
             while (!isChecked);
 
@@ -49,11 +51,12 @@ namespace Services
         public async Task SendNewsToSubscribers(List<Article> news, List<Subscription> subscriptions)
         {
             string smptServer = "smtp.gmail.com";
-            string smplLogin = "CampaTstPrereq@gmail.com";
+            string smplLogin = "CampaTstPrereq@gmail.com"; //TODO: Change creds
             string smtpPassword = "Yrq3AwZAtMTY";
 
             try
             {
+                var emailMessage = await PrepareEmailMessage(news);
 
                 foreach (Subscription sub in subscriptions)
                 {
@@ -61,12 +64,9 @@ namespace Services
                     {
                         await client.ConnectAsync(smptServer, 465, true);
                         await client.AuthenticateAsync(smplLogin, smtpPassword);
+                        emailMessage.To.Add(new MailboxAddress(string.Empty, sub.Email));
 
-
-
-                        var emailMessage = await PrepareEmailMessage(news, sub);
                         await client.SendAsync(emailMessage);
-
                         await client.DisconnectAsync(true);
                     }
                 }
@@ -84,28 +84,58 @@ namespace Services
 
             ArticlesResult newsResponse = await newsApiClient.GetTopHeadlinesAsync(new TopHeadlinesRequest
             {
-                Language = Languages.EN,
                 Category = category,
                 Page = page,
-                PageSize = pageSize
+                PageSize = pageSize,
+                Country = Countries.US
             });
 
             return newsResponse;
         }
 
-        private async Task<MimeMessage> PrepareEmailMessage(List<Article> news, Subscription subscription)
+        private async Task<MimeMessage> PrepareEmailMessage(List<Article> news)
         {
             var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "login@yandex.ru"));
-            emailMessage.To.Add(new MailboxAddress("", subscription.Email));
+            emailMessage.From.Add(new MailboxAddress("News for you!", "noreply@plz.2me"));
             emailMessage.Subject = "We got some news for you!";
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
             {
-                Text = "Some test mail text"
+                Text = await BuildEmailText(news)
             };
 
             return emailMessage;
+        }
+
+        private async Task<string> BuildEmailText(List<Article> news)
+        {
+            string emailBoby = String.Empty;
+            string newsWrapper = String.Empty;
+            string content = String.Empty;
+
+            using (StreamReader reader = new StreamReader("../email-template/news.html"))
+            {
+                newsWrapper = await reader.ReadToEndAsync();
+            }
+
+            foreach (Article article in news)
+            {
+                string articleContent = newsWrapper;
+                articleContent = articleContent.Replace("{Title}", article.Title);
+                articleContent = articleContent.Replace("{ImageUrl}", article.UrlToImage);
+                articleContent = articleContent.Replace("{Url}", article.Url);
+
+                content += articleContent;
+            }
+
+            using (StreamReader reader = new StreamReader("../email-template/index.html"))
+            {
+                emailBoby = await reader.ReadToEndAsync();
+            }
+
+            emailBoby = emailBoby.Replace("{News}", content);
+
+            return emailBoby;
         }
     }
 }
