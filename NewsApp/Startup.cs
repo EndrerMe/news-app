@@ -46,6 +46,7 @@ namespace NewsApp
             );
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "wwwroot/";
@@ -63,6 +64,17 @@ namespace NewsApp
             app.UseHttpsRedirection();
             app.UseFileServer();
             app.UseMvc();
+            //app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "";
+
+            //    if (env.IsDevelopment())
+            //    {
+            //        spa.use(npmScript: "start");
+            //    }
+            //});
         }
     }
 }
